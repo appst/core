@@ -1,0 +1,15 @@
+
+# ---------- ---------- ---------- ---------- ----------
+~~~
+# unix.stackexchange.com/questions/110617/etc-environment-not-working
+
+grep_bash(){
+  for f in  ~/.bashrc ~/.profile ~/.bash_profile ~/.bash_login \
+            /etc/profile /etc/environment /etc/bash.bashrc; 
+  do 
+    [ -e $f ] && grep -H "$@" $f; 
+  done
+}
+export -f grep_bash
+~~~
+

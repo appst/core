@@ -8,7 +8,7 @@ _c
 _kv_get_file openrc $PWORK/$PID/.picasso/bin/openrc && chmod 644 $PWORK/$PID/.picasso/bin/openrc
 
 :<<\_x
-which openrc  # /mnt/c/picasso/bin/openrc
+which openrc  # /mnt/proot/bin/openrc
 
 PATH=$PWORK/$PID/.picasso/bin:$PATH
 which openrc  # $PWORK/$PID/.picasso/bin/openrc

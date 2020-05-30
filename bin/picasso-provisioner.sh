@@ -77,16 +77,18 @@ _debug2 "GIT_PICASSO"
 
 _debug2
 
-[[ -d "$GIT_PICASSO/custom" ]] || {
-
+[[ -d $GIT_PICASSO/install ]] || {
 1>/dev/null pushd $GIT_PICASSO
-
-_debug2 "ortewotoe9379352 git submodule add $PDGIT/custom.git"
-
-sudo git submodule add $PDGIT/custom.git
-
+git submodule add $PDGIT/install.git
 1>/dev/null popd
 }
+
+[[ -d "$GIT_PICASSO/custom" ]] || {
+1>/dev/null pushd $GIT_PICASSO
+sudo git submodule add $PDGIT/custom.git
+1>/dev/null popd
+}
+
 }
 
 PICASSO=$GIT_PICASSO  # PICASSO=<source of Picasso's repo files>
@@ -99,16 +101,18 @@ production)
 
 [[ -d "$GIT_PICASSO" ]] && {
 
-[[ -d $GIT_PICASSO/custom ]] || {
-
+[[ -d $GIT_PICASSO/install ]] || {
 1>/dev/null pushd $GIT_PICASSO
-
-_debug2 "dsssfwwfowow git submodule add $PDGIT/custom.git"
-
-sudo git submodule add $PDGIT/custom.git
-
+git submodule add $PDGIT/install.git
 1>/dev/null popd
 }
+
+[[ -d "$GIT_PICASSO/custom" ]] || {
+1>/dev/null pushd $GIT_PICASSO
+sudo git submodule add $PDGIT/custom.git
+1>/dev/null popd
+}
+
 }
 
 PICASSO=$GIT_PICASSO  # PICASSO=<source of Picasso's repo files>

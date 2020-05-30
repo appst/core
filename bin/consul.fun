@@ -38,8 +38,8 @@ _c
 
 function _main() {
 
-if [[ -n "$CONSUL_CACERT" ]]; then
-rv=$(curl --cacert $CONSUL_CACERT --cert $CONSUL_CLIENT_CERT --key $CONSUL_CLIENT_KEY -s -o /dev/null --connect-timeout 2 --write-out '%{http_code}\n' $CONSUL_PROXY_ADDR/v1/status/leader)
+if [[ -n "$CONSUL_CACERT_PATH" ]]; then
+rv=$(curl --cacert $CONSUL_CACERT_PATH --cert $CONSUL_CLIENT_CERT_PATH --key $CONSUL_CLIENT_KEY_PATH -s -o /dev/null --connect-timeout 2 --write-out '%{http_code}\n' $CONSUL_PROXY_ADDR/v1/status/leader)
 [[ $? -eq 0 && "$rv" == "200" ]] || return $rv
 else
 rv=$(curl -s -o /dev/null --connect-timeout 2 --write-out '%{http_code}\n' $CONSUL_PROXY_ADDR/v1/status/leader)
@@ -64,8 +64,8 @@ local key=$1
 #_debug3 "curl -sX GET $CONSUL_PROXY_ADDR/v1/kv/$key?raw" 1>2  # we are returning stdout so we can't send anything else to it
 
 #curl -4 -sX GET $CONSUL_PROXY_ADDR/v1/kv/$key?raw
-if [[ -n "$CONSUL_CACERT" ]]; then
-curl --cacert $CONSUL_CACERT --cert $CONSUL_CLIENT_CERT --key $CONSUL_CLIENT_KEY \
+if [[ -n "$CONSUL_CACERT_PATH" ]]; then
+curl --cacert $CONSUL_CACERT_PATH --cert $CONSUL_CLIENT_CERT_PATH --key $CONSUL_CLIENT_KEY_PATH \
   -sX GET $CONSUL_PROXY_ADDR/v1/kv/$key?raw
 else
 curl \
@@ -115,9 +115,9 @@ _debug3 "curl -sX PUT -d \"$value\" $CONSUL_PROXY_ADDR/v1/kv/$key"
 
 #curl -4 -sX PUT -d "$value" $CONSUL_PROXY_ADDR/v1/kv/$key
 #1>/dev/null curl -sX PUT -d "$value" $CONSUL_PROXY_ADDR/v1/kv/$key
-if [[ -n "$CONSUL_CACERT" ]]; then
+if [[ -n "$CONSUL_CACERT_PATH" ]]; then
 rv=$(
-curl --cacert $CONSUL_CACERT --cert $CONSUL_CLIENT_CERT --key $CONSUL_CLIENT_KEY \
+curl --cacert $CONSUL_CACERT_PATH --cert $CONSUL_CLIENT_CERT_PATH --key $CONSUL_CLIENT_KEY_PATH \
   -sX PUT -d "$value" $CONSUL_PROXY_ADDR/v1/kv/$key
 )
 else
@@ -152,9 +152,9 @@ local key=$1
 
 _debug3 "curl -sX DELETE $CONSUL_PROXY_ADDR/v1/kv/$key"
 
-if [[ -n "$CONSUL_CACERT" ]]; then
+if [[ -n "$CONSUL_CACERT_PATH" ]]; then
 rv=$(
-curl --cacert $CONSUL_CACERT --cert $CONSUL_CLIENT_CERT --key $CONSUL_CLIENT_KEY \
+curl --cacert $CONSUL_CACERT_PATH --cert $CONSUL_CLIENT_CERT_PATH --key $CONSUL_CLIENT_KEY_PATH \
   -sX DELETE $CONSUL_PROXY_ADDR/v1/kv/$key
 )
 else
@@ -181,9 +181,9 @@ _debug3 "curl -sX PUT -d \"$file\" $CONSUL_PROXY_ADDR/v1/kv/$key"
 
 #curl -4 $CONSUL_PROXY_ADDR/v1/kv/$key --upload-file $file
 #r=$(curl -s --upload-file $file $CONSUL_PROXY_ADDR/v1/kv/$key -H "Content-Type: $type" -H 'Expect:')
-if [[ -n "$CONSUL_CACERT" ]]; then
+if [[ -n "$CONSUL_CACERT_PATH" ]]; then
 r=$(
-curl --cacert $CONSUL_CACERT --cert $CONSUL_CLIENT_CERT --key $CONSUL_CLIENT_KEY \
+curl --cacert $CONSUL_CACERT_PATH --cert $CONSUL_CLIENT_CERT_PATH --key $CONSUL_CLIENT_KEY_PATH \
   -s --upload-file $file $CONSUL_PROXY_ADDR/v1/kv/$key -H "Content-Type: $type" -H 'Expect:'
 )
 else
@@ -261,8 +261,8 @@ _debug3 "curl -sX PUT -d \"$file\" $CONSUL_PROXY_ADDR/v1/kv/$key"
 
 #curl -4 $CONSUL_PROXY_ADDR/v1/kv/$key --upload-file $file
 #curl -s -o $file $CONSUL_PROXY_ADDR/v1/kv/$key?raw -H "Content-Type: $type" -H 'Expect:'
-if [[ -n "$CONSUL_CACERT" ]]; then
-curl --cacert $CONSUL_CACERT --cert $CONSUL_CLIENT_CERT --key $CONSUL_CLIENT_KEY \
+if [[ -n "$CONSUL_CACERT_PATH" ]]; then
+curl --cacert $CONSUL_CACERT_PATH --cert $CONSUL_CLIENT_CERT_PATH --key $CONSUL_CLIENT_KEY_PATH \
   -s -o $file $CONSUL_PROXY_ADDR/v1/kv/$key?raw -H "Content-Type: $type" -H 'Expect:'
 else
 curl \

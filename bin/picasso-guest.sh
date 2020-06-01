@@ -89,11 +89,13 @@ export -f _error
 # source guest environment
 
 echo ssssllljlosuosufs
-DEBUG=1
+DEBUG=3
 
 _debug "whoami: $(whoami), PWD: $PWD, HOME: $HOME"
 
 _GENV_=true  # we don't export this value. in bash, sub-shells do not inherit aliases which we may have defined in init.d. to include those aliases in our environment we must reload our environment in sub-shells.
+
+_debug "OPT_PICASSO: $OPT_PICASSO, MNT_PICASSO: $MNT_PICASSO, PICASSO: $PICASSO"
 
 # this script may be run within a host context which has its own OPT_PICASSO
 OPT_PICASSO=${OPT_PICASSO:-/opt/picasso}; PGUEST=$OPT_PICASSO/core/guest

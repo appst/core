@@ -88,8 +88,8 @@ export -f _error
 # ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
 # source guest environment
 
-echo ssssllljlosuosufs
-DEBUG=3
+#echo ssssllljlosuosufs
+#DEBUG=3
 
 _debug "whoami: $(whoami), PWD: $PWD, HOME: $HOME"
 

@@ -13,10 +13,10 @@ provisioner-env) may require vboxfs
 
 _c
 
-STAGE=${STAGE:-development}
+STAGE=${STAGE:-${DEFAULT_STAGE:-development}}
 
-echo sdeiwiwssks
-DEBUG=2
+#echo ssghfsdjfsdfds
+#DEBUG=3
 
 # ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
 _debug3 "@ $@"

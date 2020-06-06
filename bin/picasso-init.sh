@@ -12,16 +12,16 @@ Guest...
 _c
 
 :<<\_c
-environment files ($PGUEST/init.d/*) load before distro files ($OPT_PICASSO/core/init.d/*) so they can affect how the distro files load
+environment files ($PGUEST/init.d/*) load before distro files ($PICASSO/core/init.d/*) so they can affect how the distro files load
 
 /usr/bin/sort will list '.' files before numeric files
 i want the numeric files to run before the '.' files, so i first load numeric files, and then the non-numeric files
 _c
 
 :<<\_c
-$OPT_PICASSO/core/guest
+$PICASSO/core/guest
 /init.d/??-*.sh  # originate from basebox
-$OPT_PICASSO/core/guest
+$PICASSO/core/guest
 /init.d/?-*.sh  # originate from subsequent provisioning
 
 load provisioning environment

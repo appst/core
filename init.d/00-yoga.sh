@@ -1,5 +1,5 @@
 :<<\_c
-. $OPT_PICASSO/core/init.d/00-yoga.fun
+. $PICASSO/core/init.d/00-yoga.fun
 
 &>/dev/null alias __c || . $PGUEST/init.d/00-yoga.fun  # __c
 _c

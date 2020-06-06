@@ -86,7 +86,7 @@ _x
 . $PWORK/$PID/.picasso/init.sh
 curl $CONSUL_PROXY_ADDR/v1/kv/DNS_KEY?raw
 
-#. $OPT_PICASSO/core/bin/consul.fun
+#. $PICASSO/core/bin/consul.fun
 _kv_get OS_AUTH_URL
 _x
 

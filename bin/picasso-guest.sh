@@ -95,17 +95,17 @@ _debug "whoami: $(whoami), PWD: $PWD, HOME: $HOME"
 
 _GENV_=true  # we don't export this value. in bash, sub-shells do not inherit aliases which we may have defined in init.d. to include those aliases in our environment we must reload our environment in sub-shells.
 
-_debug "OPT_PICASSO: $OPT_PICASSO, MNT_PICASSO: $MNT_PICASSO, PICASSO: $PICASSO"
+_debug "OPT_PICASSO: $OPT_PICASSO, MNT_V: $MNT_V, PICASSO: $PICASSO"
 
 # this script may be run within a host context which has its own OPT_PICASSO
-OPT_PICASSO=${OPT_PICASSO:-/opt/picasso}; PGUEST=$OPT_PICASSO/core/guest
+#OPT_PICASSO=${OPT_PICASSO:-/opt/picasso}; PGUEST=$PICASSO/core/guest
 #PICASSO=${PICASSO:-/opt/picasso}; PGUEST=$PICASSO/core/guest
 
 _debug "OPT_PICASSO: $OPT_PICASSO"
 
 :<<\_c
-$OPT_PICASSO/core/init.d/??-*.sh  # originate from basebox
-$OPT_PICASSO/core/init.d/?-*.sh  # originate from subsequent provisioning
+$PICASSO/core/init.d/??-*.sh  # originate from basebox
+$PICASSO/core/init.d/?-*.sh  # originate from subsequent provisioning
 
 load provisioning environment
 _c
@@ -114,11 +114,11 @@ _c
 # ----------
 :<<\_c
 provisioners write configuration to $PGUEST/init.d/
-provisioners should not write to $OPT_PICASSO/core/init.d/ - they are distro files
+provisioners should not write to $PICASSO/core/init.d/ - they are distro files
 _c
 
+. $PICASSO/core/bin/picasso-init.sh $PGUEST/init.d/
 #. $PICASSO/core/bin/picasso-init.sh $PGUEST/init.d/
-. $OPT_PICASSO/core/bin/picasso-init.sh $PGUEST/init.d/
 
 for script in $(/usr/bin/find $PGUEST/network.d/ -maxdepth 1 -name '*.env' \( -type l -o -type f \) | /usr/bin/sort); do
 _debug3 "sewttwree script: $script"
@@ -129,8 +129,8 @@ done
 _debug3 "sdgsghweiytyt924"
 
 # ----------
-#. $PICASSO/core/bin/picasso-init.sh $OPT_PICASSO/core/init.d/
-. $OPT_PICASSO/core/bin/picasso-init.sh $OPT_PICASSO/core/init.d/
+. $PICASSO/core/bin/picasso-init.sh $PICASSO/core/init.d/
+#. $PICASSO/core/bin/picasso-init.sh $PICASSO/core/init.d/
 
 _debug3 sdoww0w020002022002
 

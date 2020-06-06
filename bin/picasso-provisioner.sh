@@ -61,13 +61,14 @@ case $STAGE in
 
 development)
 
-_debug2 "xcvbsdwyisdds MNT_PICASSO: $MNT_PICASSO, GIT_PICASSO: $GIT_PICASSO"
+_debug2 "xcvbsdwyisdds MNT_V: $MNT_V, GIT_PICASSO: $GIT_PICASSO"
 
-if [[ -n "$MNT_PICASSO" ]]; then
+:<<\_j
+if [[ -n "$MNT_V" ]]; then
 
-_debug2 "MNT_PICASSO"
+_debug2 "MNT_V"
 
-PICASSO=$MNT_PICASSO  # PICASSO=<source of Picasso's repo files>
+PICASSO=$MNT_V  # PICASSO=<source of Picasso's repo files>
 
 else
 
@@ -94,6 +95,39 @@ sudo git submodule add $PDGIT/custom.git
 }
 
 PICASSO=$GIT_PICASSO  # PICASSO=<source of Picasso's repo files>
+
+fi
+_j
+
+#if [[ -n "$MNT_V" ]]; then
+if [[ -d "$OPT_PICASSO/mnt" ]]; then
+
+#PICASSO=$MNT_V  # PICASSO=<source of Picasso's repo files>
+PICASSO=$OPT_PICASSO/mnt
+
+else
+
+PICASSO=$OPT_PICASSO/git
+
+#[[ -z "$GIT_PICASSO" ]] && GIT_PICASSO=$OPT_PICASSO
+
+#[[ -d "$GIT_PICASSO" ]] && {
+
+[[ -d $PICASSO/install ]] || {
+1>/dev/null pushd $PICASSO
+git submodule add $PDGIT/install.git
+1>/dev/null popd
+}
+
+[[ -d "$PICASSO/custom" ]] || {
+1>/dev/null pushd $PICASSO
+sudo git submodule add $PDGIT/custom.git
+1>/dev/null popd
+}
+
+#}
+
+#PICASSO=$GIT_PICASSO  # PICASSO=<source of Picasso's repo files>
 
 fi
 

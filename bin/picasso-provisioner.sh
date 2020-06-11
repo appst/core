@@ -57,6 +57,8 @@ _info "Provisioning '$PPROJ' with script '$PROVISIONER'"
 
 _debug2 "_run_once_on_entry STAGE: $STAGE"
 
+PICASSO=$OPT_PICASSO/v
+
 case $STAGE in
 
 development)
@@ -100,34 +102,31 @@ fi
 _j
 
 #if [[ -n "$MNT_V" ]]; then
-if [[ -d "$OPT_PICASSO/mnt" ]]; then
+#if [[ -d "$OPT_PICASSO/mnt" ]]; then
+if [[ -d "$PICASSO/.git" ]]; then
 
-#PICASSO=$MNT_V  # PICASSO=<source of Picasso's repo files>
-PICASSO=$OPT_PICASSO/mnt
+1>/dev/null pushd $PICASSO
 
-else
-
-PICASSO=$OPT_PICASSO/git
+#PICASSO=$OPT_PICASSO/v
 
 #[[ -z "$GIT_PICASSO" ]] && GIT_PICASSO=$OPT_PICASSO
 
 #[[ -d "$GIT_PICASSO" ]] && {
 
-[[ -d $PICASSO/install ]] || {
-1>/dev/null pushd $PICASSO
-git submodule add $PDGIT/install.git
-1>/dev/null popd
-}
+[[ -d ./install ]] || git submodule add $PDGIT/install.git
 
-[[ -d "$PICASSO/custom" ]] || {
-1>/dev/null pushd $PICASSO
-sudo git submodule add $PDGIT/custom.git
-1>/dev/null popd
-}
+[[ -d ./custom ]] || sudo git submodule add $PDGIT/custom.git
 
 #}
 
+1>/dev/null popd
+
 #PICASSO=$GIT_PICASSO  # PICASSO=<source of Picasso's repo files>
+
+#else
+
+#PICASSO=$MNT_V  # PICASSO=<source of Picasso's repo files>
+#PICASSO=$OPT_PICASSO/v
 
 fi
 
@@ -135,23 +134,20 @@ fi
 
 production)
 
-[[ -d "$GIT_PICASSO" ]] && {
+#[[ -d "$GIT_PICASSO" ]] && {
+[[ -d "$PICASSO/.git" ]] && {
 
-[[ -d $GIT_PICASSO/install ]] || {
-1>/dev/null pushd $GIT_PICASSO
-git submodule add $PDGIT/install.git
+1>/dev/null pushd $PICASSO
+
+[[ -d ./install ]] || git submodule add $PDGIT/install.git
+
+[[ -d ./custom ]] || sudo git submodule add $PDGIT/custom.git
+
 1>/dev/null popd
-}
-
-[[ -d "$GIT_PICASSO/custom" ]] || {
-1>/dev/null pushd $GIT_PICASSO
-sudo git submodule add $PDGIT/custom.git
-1>/dev/null popd
-}
 
 }
 
-PICASSO=$GIT_PICASSO  # PICASSO=<source of Picasso's repo files>
+#PICASSO=$GIT_PICASSO  # PICASSO=<source of Picasso's repo files>
 ;;
 
 *)

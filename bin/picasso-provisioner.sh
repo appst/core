@@ -101,34 +101,33 @@ PICASSO=$GIT_PICASSO  # PICASSO=<source of Picasso's repo files>
 fi
 _j
 
-#if [[ -n "$MNT_V" ]]; then
-#if [[ -d "$OPT_PICASSO/mnt" ]]; then
-if [[ -d "$PICASSO/.git" ]]; then
+_debug "PICASSO: $PICASSO"
+_debug3 "$(ls -la $PICASSO)"
 
 1>/dev/null pushd $PICASSO
 
-#PICASSO=$OPT_PICASSO/v
-
-#[[ -z "$GIT_PICASSO" ]] && GIT_PICASSO=$OPT_PICASSO
-
-#[[ -d "$GIT_PICASSO" ]] && {
+#if [[ -n "$MNT_V" ]]; then
+#if [[ -d "$OPT_PICASSO/mnt" ]]; then
+if [[ -d ".git" ]]; then
 
 [[ -d ./install ]] || git submodule add $PDGIT/install.git
 
 [[ -d ./custom ]] || sudo git submodule add $PDGIT/custom.git
 
-#}
-
-1>/dev/null popd
-
 #PICASSO=$GIT_PICASSO  # PICASSO=<source of Picasso's repo files>
 
-#else
+else
 
 #PICASSO=$MNT_V  # PICASSO=<source of Picasso's repo files>
 #PICASSO=$OPT_PICASSO/v
 
+[[ -d ./install ]] || git clone $PDGIT/install.git
+
+[[ -d ./custom ]] || sudo clone $PDGIT/custom.git
+
 fi
+
+1>/dev/null popd
 
 ;;
 
@@ -159,6 +158,5 @@ esac
 #echo "PICASSO=$PICASSO" >> /etc/environment
 
 _debug2 "PICASSO: $PICASSO"
-_debug3 "$(ls -l $PICASSO)"
 
 [[ -d $PICASSO/custom ]] || _error "-d $PICASSO/custom"

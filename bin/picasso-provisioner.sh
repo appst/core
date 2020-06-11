@@ -15,8 +15,8 @@ _c
 
 STAGE=${STAGE:-${DEFAULT_STAGE:-development}}
 
-#echo ssghfsdjfsdfds
-#DEBUG=3
+echo ssghfsdjfsdfds
+DEBUG=3
 
 # ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
 _debug3 "@ $@"
@@ -159,5 +159,6 @@ esac
 #echo "PICASSO=$PICASSO" >> /etc/environment
 
 _debug2 "PICASSO: $PICASSO"
+_debug3 "$(ls -l $PICASSO)"
 
 [[ -d $PICASSO/custom ]] || _error "-d $PICASSO/custom"

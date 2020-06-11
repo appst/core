@@ -101,6 +101,8 @@ PICASSO=$GIT_PICASSO  # PICASSO=<source of Picasso's repo files>
 fi
 _j
 
+_install git
+
 _debug "PICASSO: $PICASSO"
 _debug3 "$(ls -la $PICASSO)"
 
@@ -110,7 +112,7 @@ _debug3 "$(ls -la $PICASSO)"
 #if [[ -d "$OPT_PICASSO/mnt" ]]; then
 if [[ -d ".git" ]]; then
 
-[[ -d ./install ]] || git submodule add $PDGIT/install.git
+[[ -d ./install ]] || sudo git submodule add $PDGIT/install.git
 
 [[ -d ./custom ]] || sudo git submodule add $PDGIT/custom.git
 
@@ -121,9 +123,9 @@ else
 #PICASSO=$MNT_V  # PICASSO=<source of Picasso's repo files>
 #PICASSO=$OPT_PICASSO/v
 
-[[ -d ./install ]] || git clone $PDGIT/install.git
+[[ -d ./install ]] || sudo git clone $PDGIT/install.git
 
-[[ -d ./custom ]] || sudo clone $PDGIT/custom.git
+[[ -d ./custom ]] || sudo git clone $PDGIT/custom.git
 
 fi
 

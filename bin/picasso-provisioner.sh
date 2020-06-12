@@ -13,13 +13,16 @@ provisioner-env) may require vboxfs
 
 _c
 
-STAGE=${STAGE:-${DEFAULT_STAGE:-development}}
+TEST=true
+
+STAGE=${STAGE:-${DEFAULT_STAGE:-production}}
+TEST=${TEST:-false}
 
 echo ssghfsdjfsdfds
 DEBUG=3
 
 # ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
-_debug3 "@ $@"
+_debug2 "@ $@"
 
 [[ -n "$@" ]] && {
 
@@ -57,49 +60,23 @@ _info "Provisioning '$PPROJ' with script '$PROVISIONER'"
 
 _debug2 "_run_once_on_entry STAGE: $STAGE"
 
-PICASSO=$OPT_PICASSO/v
-
 case $STAGE in
 
-development)
+development|production)
 
-_debug2 "xcvbsdwyisdds MNT_V: $MNT_V, GIT_PICASSO: $GIT_PICASSO"
+_debug2 "xcvbsdwyisdds MNT_V: $MNT_V"
 
-:<<\_j
 if [[ -n "$MNT_V" ]]; then
 
-_debug2 "MNT_V"
+_debug3 "$(ls -l $MNT_V)"
 
-PICASSO=$MNT_V  # PICASSO=<source of Picasso's repo files>
+sudo mkdir $PICASSO/install
+sudo cp -fr $MNT_V/install/* $PICASSO/install/
+
+sudo mkdir $PICASSO/custom
+sudo cp -fr $MNT_V/custom/* $PICASSO/custom/
 
 else
-
-[[ -z "$GIT_PICASSO" ]] && GIT_PICASSO=$OPT_PICASSO
-
-_debug2 "GIT_PICASSO"
-
-[[ -d "$GIT_PICASSO" ]] && {
-
-_debug2
-
-[[ -d $GIT_PICASSO/install ]] || {
-1>/dev/null pushd $GIT_PICASSO
-git submodule add $PDGIT/install.git
-1>/dev/null popd
-}
-
-[[ -d "$GIT_PICASSO/custom" ]] || {
-1>/dev/null pushd $GIT_PICASSO
-sudo git submodule add $PDGIT/custom.git
-1>/dev/null popd
-}
-
-}
-
-PICASSO=$GIT_PICASSO  # PICASSO=<source of Picasso's repo files>
-
-fi
-_j
 
 _install git
 
@@ -108,47 +85,22 @@ _debug3 "$(ls -la $PICASSO)"
 
 1>/dev/null pushd $PICASSO
 
-#if [[ -n "$MNT_V" ]]; then
-#if [[ -d "$OPT_PICASSO/mnt" ]]; then
 if [[ -d ".git" ]]; then
 
 [[ -d ./install ]] || sudo git submodule add $PDGIT/install.git
-
 [[ -d ./custom ]] || sudo git submodule add $PDGIT/custom.git
-
-#PICASSO=$GIT_PICASSO  # PICASSO=<source of Picasso's repo files>
 
 else
 
-#PICASSO=$MNT_V  # PICASSO=<source of Picasso's repo files>
-#PICASSO=$OPT_PICASSO/v
-
 [[ -d ./install ]] || sudo git clone $PDGIT/install.git
-
 [[ -d ./custom ]] || sudo git clone $PDGIT/custom.git
 
 fi
 
 1>/dev/null popd
 
-;;
+fi
 
-production)
-
-#[[ -d "$GIT_PICASSO" ]] && {
-[[ -d "$PICASSO/.git" ]] && {
-
-1>/dev/null pushd $PICASSO
-
-[[ -d ./install ]] || git submodule add $PDGIT/install.git
-
-[[ -d ./custom ]] || sudo git submodule add $PDGIT/custom.git
-
-1>/dev/null popd
-
-}
-
-#PICASSO=$GIT_PICASSO  # PICASSO=<source of Picasso's repo files>
 ;;
 
 *)
@@ -157,8 +109,9 @@ _error "Unknown STAGE: $STAGE"
 
 esac
 
-#echo "PICASSO=$PICASSO" >> /etc/environment
-
 _debug2 "PICASSO: $PICASSO"
 
+$TEST && {
+[[ -d $PICASSO/custom ]] || _error "-d $PICASSO/install"
 [[ -d $PICASSO/custom ]] || _error "-d $PICASSO/custom"
+} #$TEST

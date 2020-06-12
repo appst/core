@@ -13,13 +13,13 @@ provisioner-env) may require vboxfs
 
 _c
 
-TEST=true
+#TEST=true
 
 STAGE=${STAGE:-${DEFAULT_STAGE:-production}}
 TEST=${TEST:-false}
 
-echo ssghfsdjfsdfds
-DEBUG=3
+#echo ssghfsdjfsdfds
+#DEBUG=3
 
 # ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
 _debug2 "@ $@"

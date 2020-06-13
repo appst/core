@@ -70,11 +70,15 @@ if [[ -n "$MNT_V" ]]; then
 
 _debug3 "$(ls -l $MNT_V)"
 
+[[ -d $PICASSO/install ]] || {
 sudo mkdir $PICASSO/install
 sudo cp -fr $MNT_V/install/* $PICASSO/install/
+}
 
+[[ -d $PICASSO/custom ]] || {
 sudo mkdir $PICASSO/custom
 sudo cp -fr $MNT_V/custom/* $PICASSO/custom/
+}
 
 else
 

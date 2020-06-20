@@ -18,8 +18,8 @@ _c
 STAGE=${STAGE:-${DEFAULT_STAGE:-production}}
 TEST=${TEST:-false}
 
-#echo ssghfsdjfsdfds
-#DEBUG=3
+echo ssghfsdjfsdfds
+DEBUG=3
 
 # ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
 _debug2 "@ $@"
@@ -64,21 +64,31 @@ case $STAGE in
 
 development|production)
 
-_debug2 "xcvbsdwyisdds MNT_V: $MNT_V"
+echo "xcvbsdwyisddsz MNT_V: $MNT_V"
 
 if [[ -n "$MNT_V" ]]; then
 
-_debug3 "$(ls -l $MNT_V)"
+ls -l $MNT_V
+ls -l $PICASSO
+echo "$(ls -l $MNT_V)"
+echo "$(ls -l $PICASSO)"
+#echo "$(ls -l $PICASSO/install)"
 
-[[ -d $PICASSO/install ]] || {
-sudo mkdir $PICASSO/install
+_debug
+
+[[ -d "$PICASSO/install" ]] || {
+_debug
+sudo mkdir -p $PICASSO/install
 sudo cp -fr $MNT_V/install/* $PICASSO/install/
 }
 
-[[ -d $PICASSO/custom ]] || {
-sudo mkdir $PICASSO/custom
+[[ -d "$PICASSO/custom" ]] || {
+_debug
+sudo mkdir -p $PICASSO/custom
 sudo cp -fr $MNT_V/custom/* $PICASSO/custom/
 }
+
+_debug
 
 else
 
@@ -91,13 +101,13 @@ _debug3 "$(ls -la $PICASSO)"
 
 if [[ -d ".git" ]]; then
 
-[[ -d ./install ]] || sudo git submodule add $PDGIT/install.git
-[[ -d ./custom ]] || sudo git submodule add $PDGIT/custom.git
+[[ -d "./install" ]] || sudo git submodule add $PDGIT/install.git
+[[ -d "./custom" ]] || sudo git submodule add $PDGIT/custom.git
 
 else
 
-[[ -d ./install ]] || sudo git clone $PDGIT/install.git
-[[ -d ./custom ]] || sudo git clone $PDGIT/custom.git
+[[ -d "./install" ]] || sudo git clone $PDGIT/install.git
+[[ -d "./custom" ]] || sudo git clone $PDGIT/custom.git
 
 fi
 
@@ -116,6 +126,6 @@ esac
 _debug2 "PICASSO: $PICASSO"
 
 $TEST && {
-[[ -d $PICASSO/custom ]] || _error "-d $PICASSO/install"
+[[ -d $PICASSO/install ]] || _error "-d $PICASSO/install"
 [[ -d $PICASSO/custom ]] || _error "-d $PICASSO/custom"
 } #$TEST

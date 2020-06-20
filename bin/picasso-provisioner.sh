@@ -1,5 +1,7 @@
 [[ -v _GENV_ ]] || . picasso-guest.sh
 :<<\_c
+NB: this file is part of 'core' which requires its own basebox - iow: changes to this file require a rebuild of the basebox
+
 this script receives arguments that Vagrant passes to it that originate within the Vagrantfile
 in addition, Vagrant also sets the environment variable PROVISIONER=<name of current provisioning script file>
 note that arguments are received as pairs (--<name>=[value])
@@ -17,8 +19,8 @@ _c
 STAGE=${STAGE:-${DEFAULT_STAGE:-production}}
 TEST=${TEST:-false}
 
-echo ssghfsdjfsdfds
-DEBUG=3
+#echo ssghfsdjfsdfds
+#DEBUG=3
 
 # ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
 _debug2 "@ $@"
@@ -63,15 +65,13 @@ case $STAGE in
 
 development|production)
 
-echo "xcvbsdwyisddsz MNT_V: $MNT_V"
+_debug2 "xcvbsdwyisddsz MNT_V: $MNT_V"
 
 if [[ -n "$MNT_V" ]]; then
 
-echo "$(ls -l $MNT_V)"
-echo "$(ls -l $PICASSO)"
-#echo "$(ls -l $PICASSO/install)"
+_debug3 "$(ls -l $MNT_V)"
+_debug3 "$(ls -l $PICASSO)"
 
-_debug
 :<<\_c
 if the directory already exists, then it already has been initialized
 it may already have been initialized within the basebox
@@ -98,8 +98,6 @@ _debug
 sudo mkdir $PICASSO/custom
 sudo cp -fr $MNT_V/custom/* $PICASSO/custom/
 }
-
-_debug
 
 else
 

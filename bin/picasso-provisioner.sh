@@ -10,7 +10,6 @@ provisioner-env) may require vboxfs
 [usage]
 . picasso-provisioner.sh $@
 ...
-
 _c
 
 #TEST=true
@@ -68,23 +67,35 @@ echo "xcvbsdwyisddsz MNT_V: $MNT_V"
 
 if [[ -n "$MNT_V" ]]; then
 
-ls -l $MNT_V
-ls -l $PICASSO
 echo "$(ls -l $MNT_V)"
 echo "$(ls -l $PICASSO)"
 #echo "$(ls -l $PICASSO/install)"
 
 _debug
+:<<\_c
+if the directory already exists, then it already has been initialized
+it may already have been initialized within the basebox
+or, it may already have been initialized by earlier chained provisioning
 
+the question of whether or not to overwrite the existing directory arises
+if we don't overwrite, then a new basebox must be used that contains the desired files?
+if we do overwrite, then how do we do so only once and not by each chained provisioner?
+
+philosophy...
+that done within the basebox remains, and therefore, during basebox building, we don't initialize these directories
+iow: $PICASSO/core is pre-initialized within the basebox and does not get updated - use the basebox with the 'core' files you need, because at provision time you cammot modify 'core' files
+other modules are installed on a first come, first served, basis
+first come first served makes sence during provisioning, since the files should not change mid-provisioning
+_c
 [[ -d "$PICASSO/install" ]] || {
 _debug
-sudo mkdir -p $PICASSO/install
+sudo mkdir $PICASSO/install
 sudo cp -fr $MNT_V/install/* $PICASSO/install/
 }
 
 [[ -d "$PICASSO/custom" ]] || {
 _debug
-sudo mkdir -p $PICASSO/custom
+sudo mkdir $PICASSO/custom
 sudo cp -fr $MNT_V/custom/* $PICASSO/custom/
 }
 

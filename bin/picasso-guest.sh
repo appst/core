@@ -104,8 +104,8 @@ _debug "OPT_PICASSO: $OPT_PICASSO, MNT_V: $MNT_V, PICASSO: $PICASSO"
 _debug "OPT_PICASSO: $OPT_PICASSO"
 
 :<<\_c
-$PICASSO/core/init.d/??-*.sh  # originate from basebox
-$PICASSO/core/init.d/?-*.sh  # originate from subsequent provisioning
+$PICASSO/core/init.d/??-*.sh  # originates from basebox
+$PICASSO/core/init.d/?-*.sh  # originates from subsequent provisioning
 
 load provisioning environment
 _c
@@ -118,7 +118,6 @@ provisioners should not write to $PICASSO/core/init.d/ - they are distro files
 _c
 
 . $PICASSO/core/bin/picasso-init.sh $PGUEST/init.d/
-#. $PICASSO/core/bin/picasso-init.sh $PGUEST/init.d/
 
 for script in $(/usr/bin/find $PGUEST/network.d/ -maxdepth 1 -name '*.env' \( -type l -o -type f \) | /usr/bin/sort); do
 _debug3 "sewttwree script: $script"
@@ -130,7 +129,6 @@ _debug3 "sdgsghweiytyt924"
 
 # ----------
 . $PICASSO/core/bin/picasso-init.sh $PICASSO/core/init.d/
-#. $PICASSO/core/bin/picasso-init.sh $PICASSO/core/init.d/
 
 _debug3 sdoww0w020002022002
 

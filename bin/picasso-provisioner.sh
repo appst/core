@@ -73,7 +73,7 @@ _debug3 "$(ls -l $MNT_V)"
 _debug3 "$(ls -l $PICASSO)"
 
 :<<\_c
-if the directory already exists, then it already has been initialized
+if the directory already exists, then it has already been initialized
 it may already have been initialized within the basebox
 or, it may already have been initialized by earlier chained provisioning
 

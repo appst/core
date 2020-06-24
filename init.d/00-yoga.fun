@@ -11,6 +11,7 @@ _c
 
 shopt -s expand_aliases  # 36hr bug
 
+:<<\_j
 alias ~~~=': <<"~~~"'
 alias ~~=': <<"~~"'  # fedora was chopping off our first tilde, so this insures we still ignore our blocked out script
 alias __c=': <<"__c"'
@@ -32,6 +33,7 @@ elif [[ $TEST -eq 0 ]]; then  # standard testing
 alias __t=''  # __t
 fi
 }
+_j
 
 alias _alert='1>&2 echo -e "\e[1;41m${_TOP_:-$0}:$LINENO \e[0m"'  #]
 
@@ -87,11 +89,11 @@ echo -e "\e[0;32mINFO: $@ \e[0m"  #]
 export -f _info
 
 
-# ----------
 function _warn() {
 (( DEBUG < -1 )) ||  >&2 echo -e "\e[1;31mWARNING: $1 \e[0m"  #]
 }
 export -f _warn
+
 
 function _error() {
  >&2 echo -e "\e[1;31mERROR: $1 \e[0m"  #]

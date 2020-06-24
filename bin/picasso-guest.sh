@@ -20,11 +20,6 @@ _c
 
 shopt -s expand_aliases  # 36h bug
 
-alias ~~~=': <<"~~~"'
-alias __c=': <<"__c"'
-alias __s=': <<"__s"'
-alias __x=': <<"__x"'
-
 function _debug() {
 (( DEBUG > 0 )) && {
     local l=${#BASH_LINENO[@]}
@@ -117,6 +112,10 @@ provisioners write configuration to $PGUEST/init.d/
 provisioners should not write to $PICASSO/core/init.d/ - they are distro files
 _c
 
+. $PICASSO/core/bin/picasso-init.sh $PICASSO/core/init.d/
+
+_debug3 sdoww0w020002022002
+
 . $PICASSO/core/bin/picasso-init.sh $PGUEST/init.d/
 
 for script in $(/usr/bin/find $PGUEST/network.d/ -maxdepth 1 -name '*.env' \( -type l -o -type f \) | /usr/bin/sort); do
@@ -128,9 +127,8 @@ done
 _debug3 "sdgsghweiytyt924"
 
 # ----------
-. $PICASSO/core/bin/picasso-init.sh $PICASSO/core/init.d/
+#. $PICASSO/core/bin/picasso-init.sh $PICASSO/core/init.d/
 
-_debug3 sdoww0w020002022002
 
 # ----------
 true

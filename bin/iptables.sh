@@ -534,10 +534,10 @@ _udp_output_drop -m multiport --sports 137:138,515 -m comment --comment "netbios
 _udp_input_drop --dport 21027 -m comment --comment "syncthing"
 _tcp_input_drop --dport 22000 -m comment --comment "syncthing"
 
-__t
+$TEST && {
 # the network may not be operative
 #ping google.com -c1 1>/dev/null  # test ICMP and DNS
-__t
+} #$TEST
 
 :<<\_c
 establish a TCP chain and a UDP chain that we add all further rules to...

@@ -1,6 +1,8 @@
 :<<\_c
 . $PICASSO/core/bin/picasso-init.sh
 
+load provisioning environment
+
 [usage]
 
 Host...
@@ -23,8 +25,6 @@ $PICASSO/core/guest
 /init.d/??-*.sh  # originate from basebox
 $PICASSO/core/guest
 /init.d/?-*.sh  # originate from subsequent provisioning
-
-load provisioning environment
 _c
 
 (( PDEBUG < 3 )) || echo -e "\e[0;43m${BASH_SOURCE[0]}\e[0m"  #]
@@ -37,7 +37,6 @@ _c
 # ----------
 # *.env
 for script in $(/usr/bin/find $1 -maxdepth 1 -name '*.env' \( -type l -o -type f \) | /usr/bin/sort); do
-#for script in $(/usr/bin/find $PICASSO/core/init.d/ -maxdepth 1 -name '*.*' \( -type l -o -type f \) | /usr/bin/sort); do
 #echo "asslalhasf script: $script"
 #sleep 1
 . $script || { echo ". $script"; sleep 10; exit 1; }
@@ -47,7 +46,6 @@ done
 
 # *.fun
 for script in $(/usr/bin/find $1 -maxdepth 1 -name '*.fun' \( -type l -o -type f \) | /usr/bin/sort); do
-#for script in $(/usr/bin/find $PICASSO/core/init.d/ -maxdepth 1 -name '*.*' \( -type l -o -type f \) | /usr/bin/sort); do
 #echo "asslalhasf script: $script"
 #sleep 5
 . $script || { echo ". $script"; sleep 10; exit 1; }

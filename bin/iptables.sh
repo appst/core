@@ -7,6 +7,7 @@ http://ubuntuforums.org/archive/index.php/t-1276011.html
 https://en.wikipedia.org/wiki/List_of_TCP_and_UDP_port_numbers
 _c
 
+TEST=${TEST:-false}
 
 #DEBUG=1
 _debug_firewall 9sf7s9fs9fds9f
@@ -141,23 +142,23 @@ IPT="/sbin/iptables"
 PACKAGE_SERVER="0.0.0.0/0"  # "ftp.us.debian.org security.debian.org"
 _alert "PACKAGE_SERVER: $PACKAGE_SERVER"
 
-~~~
+:<<\_j
 if (( DEBUG > 0 )); then
 alias _tcp_input_accept='/sbin/iptables -A INPUT -p tcp -j ACCEPT -m comment --comment "$_TOP_:$LINENO" '
 alias _tcp_output_accept='/sbin/iptables -A OUTPUT -p tcp -j ACCEPT -m comment --comment "$_TOP_:$LINENO" '
 alias _udp_input_accept='/sbin/iptables -A INPUT -p udp -j ACCEPT -m comment --comment "$_TOP_:$LINENO" '
 alias _udp_output_accept='/sbin/iptables -A OUTPUT -p udp -j ACCEPT -m comment --comment "$_TOP_:$LINENO" '
 else
-~~~
+_j
 #alias _tcp_input_accept='/sbin/iptables -A INPUT -p tcp -j ACCEPT '
 #alias _tcp_output_accept='/sbin/iptables -A OUTPUT -p tcp -j ACCEPT '
 #alias _udp_input_accept='/sbin/iptables -A INPUT -p udp -j ACCEPT '
 #alias _udp_output_accept='/sbin/iptables -A OUTPUT -p udp -j ACCEPT '
 
 . $PICASSO/core/bin/iptables.fun
-~~~
+:<<\_j
 fi
-~~~
+_j
 
 # ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
 function _iptables_provision() {
@@ -536,7 +537,7 @@ _tcp_input_drop --dport 22000 -m comment --comment "syncthing"
 
 $TEST && {
 # the network may not be operative
-#ping google.com -c1 1>/dev/null  # test ICMP and DNS
+ping google.com -c1 1>/dev/null  # test ICMP and DNS
 } #$TEST
 
 :<<\_c

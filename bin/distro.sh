@@ -1,5 +1,3 @@
-# __c, et al is not yet available
-
 # this is a bootstrapping network file only and need not reside on the target machine
 
 # usage: direct all variables to the environment
@@ -150,6 +148,9 @@ debian)
 __output
 function _is_installed() { &>/dev/null dpkg -s \$1; }
 __output
+:<<\_s
+function _is_installed() { &>/dev/null dpkg-query -W -f='\''${Status} ${Version}\n'\'' \$1; }
+_s
 ;;
 
 fedora)

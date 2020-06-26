@@ -8,7 +8,7 @@ _c
 # ----------
 #CONSUL_HTTP_ADDR=${CONSUL_HTTP_ADDR:-http://$FED_PQDN:8500}
 #CONSUL_PROXY_ADDR=${CONSUL_PROXY_ADDR:-http://$FED_PQDN/consul}  # reverse proxy
-~~~
+:<<\_j
 [[ -z "$CONSUL_PROXY_ADDR" ]] && {
 
 _alert "CONSUL_PROXY_ADDR" $CONSUL_PROXY_ADDR"
@@ -28,7 +28,7 @@ _s
 CONSUL_PROXY_HTTP=${CONSUL_PROXY_HTTP:-/kv}
 CONSUL_PROXY_ADDR=http://${FED_PQDN}${CONSUL_PROXY_HTTP}
 }
-~~~
+_j
 
 
 # ----------
@@ -207,7 +207,7 @@ wget --post-file=./bar $CONSUL_PROXY_ADDR/v1/kv/foo
 _kv_set_file foo ./bar
 _x
 
-~~~
+:<<\_j
 ret=$(curl -sX PUT -d "$value" $CONSUL_PROXY_ADDR/v1/kv/$key)
 echo "ret: $ret"
 if [[ $? -eq 0 && $ret == 'true' ]]; then
@@ -223,7 +223,7 @@ fi
 else
 _error "Consul: $ret != 'true'"
 fi
-~~~
+_j
 
 # ----------
 :<<\_c

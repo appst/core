@@ -119,26 +119,26 @@ b=bb
 
 _set "$IN" ~/t
 cat ~/t
-~~~
+:<<\_j
 a = aa
 b=bb
-~~~
+_j
 
 _set "c=cc" ~/t
 cat ~/t
-~~~
+:<<\_j
 a = aa
 b=bb
 c=cc
-~~~
+_j
 
 _set "a=AA" ~/t
 cat ~/t
-~~~
+:<<\_j
 a=AA
 b=bb
 c=cc
-~~~
+_j
 _x
 
 

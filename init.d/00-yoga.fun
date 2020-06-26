@@ -108,13 +108,14 @@ export -f _warn
 
 
 function _alert() {
-  echo -e "1>&2 echo -e "\e[1;41m${_TOP_:-$0}:$LINENO \e[0m"  #]
+  1>&2 echo -e "\e[1;41m${_TOP_:-$0}:$LINENO \e[0m"  #]
 }
 export -f _alert
 
 
 function _error() {
- >&2 echo -e "\e[1;31mERROR: $1 \e[0m"  #]
+  1>&2 echo -e "\e[1;31mERROR: $1 \e[0m"  #]
+sleep 60
 exit 1
 }
 export -f _error

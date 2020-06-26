@@ -15,12 +15,11 @@ usage...
 /vagrant/.picasso/distro.sh $PGUEST/init.d/0-distro.sh && . $PGUEST/init.d/0-distro.sh
 
 $PICASSO/core/bin/distro.sh $PGUEST/init.d/00-distro.sh && . $PGUEST/init.d/00-distro.sh
-
 _c
 
 
 # ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
-shopt -s expand_aliases  # declare before the aliases are declared
+#shopt -s expand_aliases  # declare before the aliases are declared
 
 if [[ -n "$1" ]]; then
 output=$1
@@ -135,23 +134,23 @@ case $OS in
 arch)
 
 __output
-#shopt -s expand_aliases
-[[ \$DEBUG == 0 ]] \
-  && alias _install='sudo pacman --noconfirm -S' \
-  || alias _install='1>/dev/null sudo pacman --noconfirm -S'
-alias _installer='sudo pacman'
+function _is_installed() { echo TODO; }
+
+function _install() { 
+if (( DEBUG == 0 )); then
+sudo 1>/dev/null pacman --noconfirm -S "\$@"
+elif (( DEBUG < -1 )); then
+sudo &>/dev/null pacman --noconfirm -S "\$@"
+elif (( DEBUG < -0 )); then
+sudo 1>/dev/null 2>&1 pacman --noconfirm -S "\$@"
+else
+pacman --noconfirm -S "\$@"
+fi
+}
+export -f _install
 __output
 ;;
 
-debian)
-
-__output
-function _is_installed() { &>/dev/null dpkg -s \$1; }
-__output
-:<<\_s
-function _is_installed() { &>/dev/null dpkg-query -W -f='\''${Status} ${Version}\n'\'' \$1; }
-_s
-;;
 
 fedora)
 
@@ -169,18 +168,35 @@ sudo dnf -y install "\$@"
 fi
 }
 export -f _install
-shopt -s expand_aliases
-alias _installer='sudo dnf'
 __output
 ;;
 
-ubuntu)
+debian|ubuntu)
 # '-qq' implies '-y'
 # http://askubuntu.com/questions/258219/how-do-i-make-apt-get-install-less-noisy
 
 __output
-#function _is_installed() { dpkg -l \$1 | grep "ii"; }
 function _is_installed() { &>/dev/null dpkg -s \$1; }
+
+function _install() { 
+if (( DEBUG == 0 )); then
+sudo 1>/dev/null DEBIAN_FRONTEND=noninteractive apt-get -qy -o=Dpkg::Use-Pty=0 install "\$@"
+elif (( DEBUG < -1 )); then
+sudo &>/dev/null DEBIAN_FRONTEND=noninteractive apt-get -qqy -o=Dpkg::Use-Pty=0 install "\$@"
+elif (( DEBUG < -0 )); then
+sudo 1>/dev/null 2>&1 DEBIAN_FRONTEND=noninteractive apt-get -qqy -o=Dpkg::Use-Pty=0 install "\$@"
+else
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y -o=Dpkg::Use-Pty=0 install "\$@"
+fi
+}
+export -f _install
+__output
+:<<\_s
+function _is_installed() { &>/dev/null dpkg-query -W -f='\''${Status} ${Version}\n'\'' \$1; }
+_s
+
+#function _is_installed() { dpkg -l \$1 | grep "ii"; }
+
 #function _is_installed() { &>/dev/null dpkg-query -W \$1; }
 #[[ \$DEBUG == 0 ]] \
 #  && alias _install='sudo DEBIAN_FRONTEND=noninteractive apt-get -qqy install' \
@@ -189,29 +205,7 @@ function _is_installed() { &>/dev/null dpkg -s \$1; }
 #  && alias _install='sudo DEBIAN_FRONTEND=noninteractive apt -qqy -o=Dpkg::Use-Pty=0 install' \
 #  || alias _install='sudo DEBIAN_FRONTEND=noninteractive apt -y -o=Dpkg::Use-Pty=0 install'
 #[[ -v DEBUG && \$DEBUG == 0 ]] && { sudo DEBIAN_FRONTEND=noninteractive apt-get -qqy -o=Dpkg::Use-Pty=0 install \$@; } || { sudo DEBIAN_FRONTEND=snoninteractive apt-get -qq -o=Dpkg::Use-Pty=0 install \$@; }
-function _install() { 
-#if [[ -v DEBUG && \$DEBUG == 0 ]]; then
-#if [[ ! -v DEBUG || \$DEBUG <= 1 ]]; then
-#if [[ ! -v DEBUG || \$DEBUG == 0 ]]; then
-if (( DEBUG == 0 )); then
-#sudo DEBIAN_FRONTEND=noninteractive apt-get -qqy -o=Dpkg::Use-Pty=0 install "\$@"
-sudo 1>/dev/null DEBIAN_FRONTEND=noninteractive apt-get -qqy -o=Dpkg::Use-Pty=0 install "\$@"
-#elif [[ ! -v DEBUG || \$DEBUG <= -2 ]]; then
-elif (( DEBUG < -1 )); then
-sudo &>/dev/null DEBIAN_FRONTEND=noninteractive apt-get -qqy -o=Dpkg::Use-Pty=0 install "\$@"
-#elif [[ ! -v DEBUG || \$DEBUG <= -1 ]]; then
-elif (( DEBUG < -0 )); then
-sudo 1>/dev/null 2>&1 DEBIAN_FRONTEND=noninteractive apt-get -qqy -o=Dpkg::Use-Pty=0 install "\$@"
-else
-#sudo DEBIAN_FRONTEND=noninteractive apt-get -y -o=Dpkg::Use-Pty=0 install "\$@"
-sudo DEBIAN_FRONTEND=noninteractive apt-get -y -o=Dpkg::Use-Pty=0 install "\$@"
-fi
-}
-export -f _install
-shopt -s expand_aliases
-#alias _installer='sudo apt-get'
-alias _installer='sudo apt'
-__output
+
 ;;
 
 esac

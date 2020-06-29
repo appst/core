@@ -19,7 +19,7 @@ _c
 
 
 # ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
-#shopt -s expand_aliases  # declare before the aliases are declared
+shopt -s expand_aliases  # declare before the aliases are declared
 
 if [[ -n "$1" ]]; then
 output=$1

@@ -37,19 +37,19 @@ _c
 # ----------
 # *.env
 for script in $(/usr/bin/find $1 -maxdepth 1 -name '*.env' \( -type l -o -type f \) | /usr/bin/sort); do
-#echo "asslalhasf script: $script"
+(( PDEBUG < 3 )) || echo ">>> script: $script"
 #sleep 1
 . $script || { echo ". $script"; sleep 10; exit 1; }
-#echo "loading: $script done"
+(( PDEBUG < 3 )) || echo "<<<: $script done"
 #sleep 1
 done
 
 # *.fun
 for script in $(/usr/bin/find $1 -maxdepth 1 -name '*.fun' \( -type l -o -type f \) | /usr/bin/sort); do
-#echo "asslalhasf script: $script"
+(( PDEBUG < 3 )) || echo ">>> script: $script"
 #sleep 5
 . $script || { echo ". $script"; sleep 10; exit 1; }
-#echo "loading: $script done"
+(( PDEBUG < 3 )) || echo "<<<: $script done"
 #sleep 2
 done
 

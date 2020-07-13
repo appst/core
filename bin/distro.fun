@@ -17,7 +17,7 @@ function _distro_get_sha256_checksum() {
 _distro_get_version
 release="${DISTRO_MAJOR_VERSION}.${DISTRO_MINOR_VERSION}"
 [[ -n "$DISTRO_REVISION" ]] && release+=".${DISTRO_REVISION}"
-BASEBOX_REPO=$PWWW_DIR/repo/com/ubuntu
+BASEBOX_REPO=$PWWW_PATH/repo/com/ubuntu
 cat $BASEBOX_REPO/${DISTRO_MAJOR_VERSION}.$DISTRO_MINOR_VERSION/SHA256SUMS | grep ${DISTRO_NAME}-${release}-${DISTRO_TYPE}-${DISTRO_ARCH}.iso | /usr/bin/cut -d' ' -f1
 }
 
@@ -31,13 +31,13 @@ DISTRO_RELEASE=18.04.4
 DISTRO_TYPE=server
 DISTRO_ARCH=amd64
 
-BASEBOX_REPO=$PWWW_DIR/repo/com/ubuntu
+BASEBOX_REPO=$PWWW_PATH/repo/com/ubuntu
 
 OS=ubuntu . $PICASSO/core/bin/distro.fun; _distro_get_version  # <- $DISTRO_RELEASE -> $DISTRO_MAJOR_VERSION, $DISTRO_MINOR_VERSION, $DISTRO_REVISION
 DISTRO_SHA256_CHECKSUM=$(_distro_get_sha256_checksum)
 
 iso_name=${DISTRO_NAME}-${DISTRO_RELEASE}-${DISTRO_TYPE}-${DISTRO_ARCH}
 
-REPO_ISO="$PWWW_DIR/repo/com/ubuntu/${DISTRO_MAJOR_VERSION}.${DISTRO_MINOR_VERSION}/${iso_name}.iso"
+REPO_ISO="$PWWW_PATH/repo/com/ubuntu/${DISTRO_MAJOR_VERSION}.${DISTRO_MINOR_VERSION}/${iso_name}.iso"
 REPO_ISO_URL="file://$(convertpath -m $REPO_ISO)"
 _x

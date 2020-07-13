@@ -9,6 +9,8 @@ KV_STORE defined and not empty - load the appropriate handler - return 0
 KV_STORE defined and empty or not a valid handler - return 1
 _c
 
+_debug "KV_STORE: $KV_STORE"
+
 [[ -v KV_STORE ]] || return 1
 
 case $KV_STORE in

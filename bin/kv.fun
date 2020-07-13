@@ -11,6 +11,8 @@ _c
 
 echo "KV_STORE: $KV_STORE"
 
+KV_STORE=redis
+
 [[ -v KV_STORE ]] || return 1
 
 case $KV_STORE in

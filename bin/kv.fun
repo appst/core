@@ -21,4 +21,5 @@ redis) . $PICASSO/core/bin/redis.fun;;
 *) return 1;;
 esac
 
-return 0
+#return 0
+true

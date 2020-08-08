@@ -48,14 +48,16 @@ alias _udp_output_drop="sudo /sbin/iptables -A OUTPUT -p udp -j DROP "
 function _tcp_in_accept() {
 #echo "_tcp_in_accept **** $DEBUG"
 #(( DEBUG > 0 )) && echo "${_TOP_:-$0}:$LINENO /sbin/iptables -A TCP_IN -p tcp -j ACCEPT $@ "
-sudo /sbin/iptables -A TCP_IN -p tcp -j ACCEPT $@ 
+#sudo /sbin/iptables -A TCP_IN -p tcp -j ACCEPT $@ 
+sudo /sbin/iptables -A INPUT -p tcp -j ACCEPT $@ 
 }
 
 #alias _tcp_out_accept="sudo /sbin/iptables -A TCP_OUT -p tcp -j ACCEPT "
 function _tcp_out_accept() {
 #echo "_tcp_out_accept **** $DEBUG"
 #(( DEBUG > 0 )) && echo "${_TOP_:-$0}:$LINENO /sbin/iptables -A TCP_OUT -p tcp -j ACCEPT $@ "
-sudo /sbin/iptables -A TCP_OUT -p tcp -j ACCEPT $@ 
+#sudo /sbin/iptables -A TCP_OUT -p tcp -j ACCEPT $@ 
+sudo /sbin/iptables -A OUTPUT -p tcp -j ACCEPT $@ 
 }
 
 alias _udp_in_accept="sudo /sbin/iptables -A UDP_IN -p udp -j ACCEPT "
@@ -77,14 +79,14 @@ type - UDP
 workflow:
 client(any port) -> server(specific port) -> client(any port)
 _c
-:<<\_c
+:<<\__c
 interface...
 127.0.0.1|localhost - do not open firewall
 MNIC|$MNIC_IP - open firewall on $MNIC_ ${MANAGEMENT_C}.0/$MANAGEMENT_PREFIX only
 XNIC|$XNIC_IP - open firewall on $XNIC_ ${XNIC_NETWORK}.0/${XNIC_PREFIX} only
 NICSA - open firewall on array of interfaces
 FNICSA - open firewall on array of interfaces
-_c
+__c
 :<<\_c
 -m multiport --dports is only needed if the range you want to open is not continuous, eg -m multiport --dports 80,443, which will open up HTTP and HTTPS only - not the ones in between
 _c
@@ -284,7 +286,7 @@ export -f _open_server_firewall
 
 
 # ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
-:<<\_c
+:<<\__c
 _open_client_firewall <interface> <remote destination port/s, remote source port/s> <comment>
 
 _open_client_firewall FNICSA any:445 'Samba'
@@ -296,15 +298,15 @@ any port -> 80
 any port -> 445
 
 this assumes _iptables-input-drop-forward-drop-output-accept, because dports always refers to the remote port and does not impede any local port destinations
-_c
-:<<\_c
+__c
+:<<\__c
 TODO:
 for now i avoid the random port stuff by omitting the local source port
 
 we could extend things like so:
 _open_client_firewall FNICSA any:445 'Samba'
 _open_client_firewall FNICSA any:80 'Samba'
-_c
+__c
 
 
 function _open_client_firewall() {

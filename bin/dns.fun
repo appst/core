@@ -12,11 +12,11 @@ _dns_set ${PHOST}.bit.cafe. 10.0.0.9
 FED_PQDN=bit.cafe _dns_set $PHOST 10.0.0.9
 FED_PQDN=picasso.digital _dns_get identity
 
-FED_PQDN=bit.cafe DNS_KEY=$PWORK/$PID/.picasso/${FED_PQDN}.key _dns_set $PHOST 10.0.0.9
+FED_PQDN=bit.cafe DNS_KEY_PATH=$PWORK/$PID/.picasso/${FED_PQDN}.key _dns_set $PHOST 10.0.0.9
 
 _dns_set $PNAME $ip
-FED_PQDN=bit.cafe DNS_KEY=$PWORK/$PID/.picasso/${FED_PQDN}.key _dns_set $PNAME $ip
-FED_PQDN=bit.cafe DNS_KEY=$PWORK/$PID/.picasso/${FED_PQDN}.key _dns_set test 192.168.1.254
+FED_PQDN=bit.cafe DNS_KEY_PATH=$PWORK/$PID/.picasso/${FED_PQDN}.key _dns_set $PNAME $ip
+FED_PQDN=bit.cafe DNS_KEY_PATH=$PWORK/$PID/.picasso/${FED_PQDN}.key _dns_set test 192.168.1.254
 
 _dns_get ${PHOST}.${FED_PQDN}
 _c
@@ -24,14 +24,14 @@ _c
 
 # ----------
 :<<\_c
-_dns_set <name> <ip>  # <- $FED_PQDN, $DNS_KEY, $DNS_IP
+_dns_set <name> <ip>  # <- $FED_PQDN, $DNS_KEY_PATH, $DNS_IP
 
 $1 - <hostname>[.subdomain][FED_PQDN.]
 $2 - ip
 _c
 
-DNS_KEY=${DNS_KEY:-$PWORK/$PID/.picasso/${FED_PQDN}.key}
-#[[ -f $DNS_KEY ]] || { _alert '-f $DNS_KEY'; return 1; }  # host only
+DNS_KEY_PATH=${DNS_KEY_PATH:-$PWORK/$PID/.picasso/${FED_PQDN}.key}
+#[[ -f "$DNS_KEY_PATH" ]] || { _alert '-f $DNS_KEY_PATH'; return 1; }  # host only
 
 :<<\_x
 fqdn=$(echo $1 | grep -P "^[a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-zA-Z0-9](?:\.[a-zA-Z]{2,})+$")
@@ -53,7 +53,7 @@ FED_PQDN=picasso.digital _dns_set $HOSTNAME 10.0.0.9
 FED_PQDN=picasso.digital
 FQDN=${HOSTNAME}.${FED_PQDN}
 ip=10.0.0.9
-key=${4:-${DNS_KEY:-$DOMAIN_DNS_KEY}}
+key=${4:-${DNS_KEY_PATH:-$DOMAIN_DNS_KEY_PATH}}
 cat <<! | nsupdate -k $key
 server dns
 zone ${FED_PQDN}.
@@ -66,7 +66,7 @@ _x
 
 :<<\_j
 local FED_PQDN=${FED_PQDN:-$GENESIS_PQDN}
-local DNS_KEY=${DNS_KEY:-$PWORK/$PID/.picasso/${FED_PQDN}.key}
+local DNS_KEY_PATH=${DNS_KEY_PATH:-$PWORK/$PID/.picasso/${FED_PQDN}.key}
 local fqdn=$1.${FED_PQDN}
 local ip=$2
 
@@ -120,7 +120,7 @@ else
 _s
 
 # www
-_debug2 "FED_PQDN: $FED_PQDN, DNS_KEY: $DNS_KEY"
+_debug2 "FED_PQDN: $FED_PQDN, DNS_KEY_PATH: $DNS_KEY_PATH"
 
 :<<\_x
 . $PICASSO/core/bin/dns.fun
@@ -129,10 +129,10 @@ FQDN=picasso.digital
 SUB=
 CONSUL_NODE_NAME=consul
 CONSUL_DATACENTER=dc1
-DNS_KEY=/etc/bind/$FQDN.key \
+DNS_KEY_PATH=/etc/bind/$FQDN.key \
 _dns_set ${CONSUL_NODE_NAME}.${CONSUL_DATACENTER}${SUB} 1.2.3.4
 
-DNS_KEY=/etc/bind/$FQDN.key \
+DNS_KEY_PATH=/etc/bind/$FQDN.key \
 _dns_get ${CONSUL_NODE_NAME}.${CONSUL_DATACENTER}${SUB}
 _x
 
@@ -163,10 +163,10 @@ _s
 
 _debug2 "fqdn_dot: $fqdn_dot"
 
-#local DNS_KEY=${DNS_KEY:-$PWORK/$PID/.picasso/${FED_PQDN}.key}
+#local DNS_KEY_PATH=${DNS_KEY_PATH:-$PWORK/$PID/.picasso/${FED_PQDN}.key}
 local ip=$2
 
-_debug2 "DNS_KEY: $DNS_KEY, DNS_IP: $DNS_IP, ip: $ip"
+_debug2 "DNS_KEY_PATH: $DNS_KEY_PATH, DNS_IP: $DNS_IP, ip: $ip"
 
 #-d - debug mode
 #these two...
@@ -191,14 +191,14 @@ send
 
 else
 
-#[[ -v _HENV_ ]] && _pdebug3 "cat <<! | nsupdate -k $DNS_KEY
+#[[ -v _HENV_ ]] && _pdebug3 "cat <<! | nsupdate -k $DNS_KEY_PATH
 #server $DNS_IP
 #update delete $fqdn_dot A
 #update add $fqdn_dot 3600 A $ip
 #send
 #!
 #"
-#[[ -v _GENV_ ]] && _debug3 "cat <<! | nsupdate -k $DNS_KEY
+#[[ -v _GENV_ ]] && _debug3 "cat <<! | nsupdate -k $DNS_KEY_PATH
 #server $DNS_IP
 #update delete $fqdn_dot A
 #update add $fqdn_dot 3600 A $ip
@@ -206,9 +206,9 @@ else
 #!
 #"
 
-_debug2 "fqdn_dot: $fqdn_dot, DNS_KEY: $DNS_KEY"
+_debug2 "fqdn_dot: $fqdn_dot, DNS_KEY_PATH: $DNS_KEY_PATH"
 
-cat <<! | nsupdate -k $DNS_KEY
+cat <<! | nsupdate -k $DNS_KEY_PATH
 server $DNS_IP
 update delete $fqdn_dot A
 update add $fqdn_dot 3600 A $ip
@@ -376,7 +376,7 @@ ip=${ip:-192.168.1.254}
 pqdn=${3:-$FED_PQDN}
 _debug "PNAME: $PNAME, ip: $ip, pqdn: $pqdn"
 
-pqdn=$FED_PQDN DNS_KEY=$PHOME/service/dns/${pqdn}.key _dns_set $PNAME $ip
+pqdn=$FED_PQDN DNS_KEY_PATH=$PHOME/service/dns/${pqdn}.key _dns_set $PNAME $ip
 
 nslookup -q=A $PNAME $dns || return 1  # $dns may or may not be set from $PROOT/bin/host/network/resolve.sh
 [[ -n "$pqdn" ]] && { nslookup $PNAME.${pqdn} $dns || return 1; }  # $dns may or may not be set from $PROOT/bin/host/network/resolve.sh

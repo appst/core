@@ -5,7 +5,7 @@
 # [[ -v _GENV_ ]] || . picasso-guest.sh
 
 # non-interactive, non-login bash shells execute the contents of the file specified in $BASH_ENV
-# automatically run non-interactively (ie: to run a sub-shell script)
+# automatically run non-interactively (ie: to run a subshell script)
 # if [ -n "$BASH_ENV" ]; then . "$BASH_ENV"; fi
 #export BASH_ENV=$PICASSO/core/bin/picasso-guest.sh
 
@@ -53,7 +53,11 @@ export -f _debug3
 
 
 # ----------
-alias _alert='1>&2 echo -e "\e[1;41m${_TOP_:-$0}:$LINENO \e[0m"'  #]
+#alias _alert='1>&2 echo -e "\e[1;41m${_TOP_:-$0}:$LINENO \e[0m"'  #]
+function _alert() {
+  1>&2 echo -e "\e[1;41m${_TOP_:-$0}:$LINENO $1 \e[0m"  #]
+}
+export -f _alert
 
 
 # ----------
@@ -88,7 +92,7 @@ export -f _error
 
 _debug "whoami: $(whoami), PWD: $PWD, HOME: $HOME"
 
-_GENV_=true  # we don't export this value. in bash, sub-shells do not inherit aliases which we may have defined in init.d. to include those aliases in our environment we must reload our environment in sub-shells.
+_GENV_=true  # we don't export this value. in bash, subshells do not inherit aliases which we may have defined in init.d. to include those aliases in our environment we must reload our environment in subshells.
 
 _debug "OPT_PICASSO: $OPT_PICASSO, MNT_V: $MNT_V, PICASSO: $PICASSO"
 
@@ -116,9 +120,11 @@ _c
 
 _debug3 sdoww0w020002022002
 
-. $PICASSO/core/bin/picasso-init.sh $PGUEST/init.d/
+#. $PICASSO/core/bin/picasso-init.sh $PGUEST/init.d/
+. $PICASSO/core/bin/picasso-init.sh $PICASSO/core/guest/init.d/
 
-for script in $(/usr/bin/find $PGUEST/network.d/ -maxdepth 1 -name '*.env' \( -type l -o -type f \) | /usr/bin/sort); do
+#for script in $(/usr/bin/find $PGUEST/network.d/ -maxdepth 1 -name '*.env' \( -type l -o -type f \) | /usr/bin/sort); do
+for script in $(/usr/bin/find $PICASSO/core/guest/network.d/ -maxdepth 1 -name '*.env' \( -type l -o -type f \) | /usr/bin/sort); do
 _debug3 "sewttwree script: $script"
 . $script || _error ". $script"
 _debug3 "s0fs080 script: $script"

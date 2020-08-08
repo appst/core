@@ -75,6 +75,23 @@ function version { echo "$@" | awk -F. '{ printf("%d%03d%03d%03d\n", $1,$2,$3,$4
 export -f version
 
 
+# ----------
+_debug "DISTRO_NAME: $DISTRO_NAME"
+
+case $DISTRO_NAME in
+
+ubuntu)
+#shopt -s expand_aliases
+#alias _install='sudo apt-get -y install'
+function _install() {
+sudo apt-get -y install $@
+}
+export -f _install
+;;
+
+esac
+
+
 # ---------- ---------- ---------- ---------- ----------
 (( PDEBUG < 3 )) || echo -e "\e[2;30;43m<<< ${BASH_SOURCE[0]}\e[0m"  #]
 

@@ -227,7 +227,7 @@ _j
 
 # ----------
 :<<\_c
-. $PID_BIN_DIR/init.d/consul.env
+. $PID_PICASSO/init.d/consul.env
 . $PICASSO/core/bin/consul.fun
 _kv_set_file SSH_PRIVATE_KEY $SSH_PRIVATE_KEY
 _kv_get_file SSH_PRIVATE_KEY

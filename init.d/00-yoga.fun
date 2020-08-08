@@ -109,7 +109,7 @@ export -f _warn
 
 
 function _alert() {
-  1>&2 echo -e "\e[1;41m${_TOP_:-$0}:$LINENO \e[0m"  #]
+  1>&2 echo -e "\e[1;41m${_TOP_:-$0}:$LINENO $1 \e[0m"  #]
 }
 export -f _alert
 

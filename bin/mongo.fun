@@ -37,7 +37,7 @@ function _nosql_create_document() {
 local server_id=${2:-$(uuidgen)}
 local file=$3
 
-if [[ -f $file ]]; then
+if [[ -f "$file" ]]; then
 
 #_debug "server_id: $server_id"
 #_debug3 "$(cat $file)"

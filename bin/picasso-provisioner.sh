@@ -43,7 +43,7 @@ provisioner=$val
 provisioner-env)
 PROVISIONER_ENV=$val
 _info "Environment: $PROVISIONER_ENV"
-_debug3 "$(<$PROVISIONER_ENV)"
+_debug "$(<$PROVISIONER_ENV)"
 . $PROVISIONER_ENV
 ;;
 
@@ -99,9 +99,11 @@ sudo mkdir $PICASSO/custom
 sudo cp -fr $MNT_V/custom/* $PICASSO/custom/
 }
 
-else
+elif [[ -n "$PDGIT" ]]; then
 
-_install git
+_debug "_install git"
+
+_is_installed git || _install git
 
 _debug "PICASSO: $PICASSO"
 _debug3 "$(ls -la $PICASSO)"
@@ -127,7 +129,7 @@ fi
 ;;
 
 *)
-_error "Unknown STAGE: $STAGE"
+_alert "Skipping STAGE: $STAGE"
 ;;
 
 esac

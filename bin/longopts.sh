@@ -139,6 +139,8 @@ done
 
 fi
 
+#echo ${other[@]}
+
 set -- "${other[@]}" # restore other parameters
 #set --  # clear script arguments to prevent re-entry and parameter propagation to sourced sub-scripts
 

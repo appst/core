@@ -16,8 +16,13 @@ _c
 
 function _kv_get() {
 
+local ip=${REDIS_IP:-$KV_IP}
+local port=${REDIS_PORT:-$KV_PORT}
+
+#_debug "_get_kv ip: $ip, port: $port"  # don't return anything
+
 #redis-cli -h $REDIS_IP -p $REDIS_PORT get $1
-redis-cli -h $REDIS_IP -p $REDIS_PORT get $1 | tr -d '\n'
+redis-cli -h $ip -p $port get $1 | tr -d '\n'
 }
 export -f _kv_get
 

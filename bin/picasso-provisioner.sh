@@ -10,7 +10,7 @@ note that arguments are received as pairs (--<name>=[value])
 provisioner-env) may require vboxfs
 
 [usage]
-. picasso-provisioner.sh $@
+. picasso-provisioner.sh #$@
 ...
 _c
 

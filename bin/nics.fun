@@ -77,7 +77,7 @@ export ${2}_option1=${!option1}  # cnics_option1=intnet-tunnel
 
 # ----------
 :<<\_x
-. $PICASSO/core/bin/nics.sh
+. $PICASSO/core/bin/nics.fun
 
 PNICS=" \
   IP1-$IDENTITY_MANAGEMENT_IP:MNIC:intnet-management \

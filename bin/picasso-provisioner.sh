@@ -54,7 +54,8 @@ set --  # clear script arguments to prevent re-entry and parameter propagation t
 
 }
 
-_debug2
+_debug2 "@: $@"
+
 
 # ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
 _info "Provisioning '$PPROJ' with script '$PROVISIONER'"

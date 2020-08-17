@@ -48,7 +48,12 @@ _debug "$(<$PROVISIONER_ENV)"
 ;;
 
 esac
+
+_debug
+
 done
+
+_debug
 
 set --  # clear script arguments to prevent re-entry and parameter propagation to sourced sub-scripts
 

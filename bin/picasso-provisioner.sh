@@ -54,7 +54,7 @@ set --  # clear script arguments to prevent re-entry and parameter propagation t
 
 }
 
-_debug2 "@: $@"
+_debug "@: $@"
 
 
 # ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------

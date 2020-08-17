@@ -49,7 +49,7 @@ done
 
 
 # ----------
-function _PNICS_2env() {
+function _PNICS_2env() {  # <array prefix> <variable prefix> <index>
 local i=$3
 
 local IPx=${1}${i}[0]  # IPx=cnics1[0]
@@ -107,7 +107,7 @@ export mode1
 export cidr1
 __c
 
-function _PNICS_2setenv() {
+function _PNICS_2setenv() {  # <array prefix> <variable prefix>
 local ptr_length=${1}_length
 local i
 
@@ -130,8 +130,8 @@ _debug3 "$(env | grep ${2}_)"
 _debug2 "$n) cnic_IP: $cnic_IP, cnic_ip: $cnic_ip, cnic_mnemonic: $cnic_mnemonic, cnic_type: $cnic_type, cnic_option1: $cnic_option1"
 
 # IP1 - extract the last character that is the interface offset
-local IP=${2}_IP
-n=${!IP: -1}  # nic1
+local IP=${2}_IP  # IP=cnic_IP
+n=${!IP:-1}  # n=nic1
 
 local mnemonic=${2}_mnemonic
 mnemonic=${!mnemonic}

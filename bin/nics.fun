@@ -6,9 +6,35 @@
 # therefore, we declare the array within an alias which then calls a complementary function for additional processing
 # NB: we are dealing with one dimensional arrays - that's all bash has
 _c
+:<<\_x
+. $PICASSO/core/bin/nics.fun
 
+# PNICS=<serialized NIC values>
+PNICS="IP1-192.168.1.9:MNIC:192.168.1.0 IP2-10.0.0.7:XNIC:10.0.0.0-promiscuous:provider-flat IP3-manual:TNIC:intnet-tunnel"
+
+alias _PNICS_2array='cnics_length=0; for nic in $PNICS; do cnics_length=$((cnics_length+1)); v=cnics${cnics_length}; echo "$v: $nic"; eval "declare -a $v=(${nic//:/ })"; _PNICS_2array2 $v; done'
+
+# marshal $PNICS into environment - $PNICS -> env:cnics${n}[0...]
+_PNICS_2array
+
+for ((i=1;i<=$cnics_length;i++)); do
+_cnics=cnics${i}
+for ((j=0;j<=3;j++)); do
+k=$_cnics[$j]  # cnics1[0]
+echo "$_cnics[$j]: ${!k}"
+done
+done
+
+_PNICS_2env cnic_1 cnics1
+
+env | grep cnic_1
+
+_PNICS_dump cnics
+_x
 
 # ----------
+shopt -s expand_aliases  # 36hr bug
+
 alias _PNICS_2array='cnics_length=0; for nic in $PNICS; do cnics_length=$((cnics_length+1)); v=cnics${cnics_length}; eval "declare -a $v=(${nic//:/ })"; _PNICS_2array2 $v; done'
 
 function _PNICS_2array2() {
@@ -23,55 +49,58 @@ local ip=${IPx#*-}  # retain the part after the first hyphen (1.2.3.4)
 
 # ----------
 :<<\_c
-_PNICS_2stdout PNICS ?
+dump all array content: cnics[0]... cnics[n]
+we pass the array prefix: cnics
 _c
 
-function _PNICS_2stdout() {  # <array prefix> <variable prefix>
+#function _PNICS_2stdout() {  # <array prefix> <environment variable prefix>
+function _PNICS_dump() {  # <array prefix>
 local ptr_length=${1}_length  # ptr_length=PNICS_length
 local i
 
+_debug "ptr_length: $ptr_length, {!ptr_length}: ${!ptr_length}"
+
 for ((i=1;i<=${!ptr_length};i++)); do
 
-#_debug "_PNICS_2env $1 $2 $i"
-_PNICS_2env $1 $2 $i
+_PNICS_2env dump ${1}${i}
 
-local IP=${2}_IP
-local ip=${2}_ip
-local mnemonic=${2}_mnemonic
-local type=${2}_type
-local option1=${2}_option1
-
-#_debug "mnemonic: $mnemonic, IP: $IP, ip: $ip, type: $type, options: $options"
-
-printf "${1}${i}: %s, %s, %s %s %s\n" ${!IP} ${!ip} ${!mnemonic} ${!type} ${!option1}
+printf "${1}${i}: %s, %s, %s %s %s\n" $dump_IP $dump_ip $dump_mnemonic $dump_type $dump_option1
 done
 }
 
 
 # ----------
-function _PNICS_2env() {  # <array prefix> <variable prefix> <index>
-local i=$3
+function _PNICS_2env() {  # <environment variable prefix> <array name>
+local prefix=$1
+local arr=$2
 
-local IPx=${1}${i}[0]  # IPx=cnics1[0]
-#_debug "$i - IPx: $IPx"
+local IPx=$arr[0]  # IPx=cnics1[0]
+
+#_debug "_PNICS_2env $@"
+
 IPx=${!IPx}  # IPx=IP1-192.168.1.5
 #_debug "$i - IPx: $IPx"
 
 local IP=${IPx%-*}  # retain the part before the first hyphen (IP1)
-export ${2}_IP=$IP
+export ${prefix}_IP=$IP
+#_debug "export ${prefix}_IP=$IP"
 
 local ip=${IPx#*-}  # retain the part after the first hyphen (MNIC_IP/controller.domain.com/1.2.3.4)
 [[ $ip =~ _IP$ ]] && ip=${!ip}  # ends with '_IP'
-export ${2}_ip=$ip
+export ${prefix}_ip=$ip
+#_debug "export ${prefix}_ip=$ip"
 
-local mnemonic=${1}${i}[1]  # mnenmonic=cnics1[1]
-export ${2}_mnemonic=${!mnemonic}  # cnics_menmonic=MNIC
+local mnemonic=$arr[1]  # mnenmonic=cnics1[1]
+export ${prefix}_mnemonic=${!mnemonic}  # cnics_menmonic=MNIC
+#_debug "export ${prefix}_mnemonic=${!mnemonic}"
 
-local type=${1}${i}[2]  # type=cnics1[2]
-export ${2}_type=${!type}  # cnics_menmonic=MNIC
+local type=$arr[2]  # type=cnics1[2]
+export ${prefix}_type=${!type}  # cnics_menmonic=MNIC
+#_debug "export ${prefix}_type=${!type}"
 
-local option1=${1}${i}[3]  # option1=cnics1[3]
-export ${2}_option1=${!option1}  # cnics_option1=intnet-tunnel
+local option1=$arr[3]  # option1=cnics1[3]
+export ${prefix}_option1=${!option1}  # cnics_option1=intnet-tunnel
+#_debug "export ${prefix}_option1=${!option1}"
 }
 
 
@@ -85,9 +114,9 @@ PNICS=" \
   IP3-$NETWORK_TUNNEL_IP:TNIC:bridged"
 
 _PNICS_2array  # -> env:cnics${i}[<1...4>], cnics_length
-_PNICS_2stdout cnics cnic  # <- env:cnics_length
-_PNICS_2env cnics cnic 1  # -> env:cnic_{?}
-env | grep cnic
+_PNICS_dump cnics  # <- env:cnics_length
+_PNICS_2env cnic_1 cnics1  # -> env:cnic_{?}
+env | grep cnic_1
 _x
 
 
@@ -121,9 +150,9 @@ _debug "_PNICS_2setenv ptr_length: ${!ptr_length}"
 
 for ((i=1;i<=${!ptr_length};i++)); do
 
-_debug2 "_PNICS_2env $1 $2 $i"
+_debug2 "_PNICS_2env $2 $1$i"
 
-_PNICS_2env $1 $2 $i  # -> env:cnic_{?}
+_PNICS_2env $2 ${1}${i}  # -> env:cnic_{?}
 
 _debug3 "$(env | grep ${2}_)"
 

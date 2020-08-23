@@ -80,7 +80,7 @@ _x
 # ---------- ---------- ---------- ---------- ----------
 function _inject_into_etc_hosts() {  # <OSNAME>
 local OSNAME=$1
-IP=IP_${OSNAME}
+IP=IP_${OSNAME^^}
 case ${!IP} in
 MNIC_IP)
 grep -q " ${OSNAME}$" /etc/hosts || sudo bash -c "cat >> /etc/hosts" <<< "$MNIC_IP ${OSNAME}"

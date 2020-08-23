@@ -33,7 +33,7 @@ _PNICS_dump cnics
 _x
 
 # ----------
-shopt -s expand_aliases  # 36hr bug
+#shopt -s expand_aliases  # 36hr bug
 
 alias _PNICS_2array='cnics_length=0; for nic in $PNICS; do cnics_length=$((cnics_length+1)); v=cnics${cnics_length}; eval "declare -a $v=(${nic//:/ })"; _PNICS_2array2 $v; done'
 

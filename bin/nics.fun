@@ -53,7 +53,6 @@ dump all array content: cnics[0]... cnics[n]
 we pass the array prefix: cnics
 _c
 
-#function _PNICS_2stdout() {  # <array prefix> <environment variable prefix>
 function _PNICS_dump() {  # <array prefix>
 local ptr_length=${1}_length  # ptr_length=PNICS_length
 local i

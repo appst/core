@@ -91,7 +91,7 @@ philosophy...
 that done within the basebox remains, and therefore, during basebox building, we don't initialize these directories
 iow: $PICASSO/core is pre-initialized within the basebox and does not get updated - use the basebox with the 'core' files you need, because at provision time you cammot modify 'core' files
 other modules are installed on a first come, first served, basis
-first come first served makes sence during provisioning, since the files should not change mid-provisioning
+first come first served makes sense during provisioning, since the files should not change mid-provisioning
 _c
 [[ -d "$PICASSO/install" ]] || {
 _debug

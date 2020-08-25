@@ -90,17 +90,17 @@ export -f _error
 #echo ssssllljlosuosufs
 #DEBUG=3
 
-_debug "whoami: $(whoami), PWD: $PWD, HOME: $HOME"
+_debug2 "whoami: $(whoami), PWD: $PWD, HOME: $HOME"
 
 _GENV_=true  # we don't export this value. in bash, subshells do not inherit aliases which we may have defined in init.d. to include those aliases in our environment we must reload our environment in subshells.
 
-_debug "OPT_PICASSO: $OPT_PICASSO, MNT_V: $MNT_V, PICASSO: $PICASSO"
+_debug2 "OPT_PICASSO: $OPT_PICASSO, MNT_V: $MNT_V, PICASSO: $PICASSO"
 
 # this script may be run within a host context which has its own OPT_PICASSO
 #OPT_PICASSO=${OPT_PICASSO:-/opt/picasso}; PGUEST=$PICASSO/core/guest
 #PICASSO=${PICASSO:-/opt/picasso}; PGUEST=$PICASSO/core/guest
 
-_debug "OPT_PICASSO: $OPT_PICASSO"
+_debug2 "OPT_PICASSO: $OPT_PICASSO"
 
 :<<\_c
 $PICASSO/core/init.d/??-*.sh  # originates from basebox
@@ -120,10 +120,8 @@ _c
 
 _debug3 sdoww0w020002022002
 
-#. $PICASSO/core/bin/picasso-init.sh $PGUEST/init.d/
 . $PICASSO/core/bin/picasso-init.sh $PICASSO/core/guest/init.d/
 
-#for script in $(/usr/bin/find $PGUEST/network.d/ -maxdepth 1 -name '*.env' \( -type l -o -type f \) | /usr/bin/sort); do
 for script in $(/usr/bin/find $PICASSO/core/guest/network.d/ -maxdepth 1 -name '*.env' \( -type l -o -type f \) | /usr/bin/sort); do
 _debug3 "sewttwree script: $script"
 . $script || _error ". $script"

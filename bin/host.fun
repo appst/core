@@ -27,7 +27,7 @@ case $ip in
 MNIC_IP|XNIC_IP) ip=${!ip} ;;
 esac
 
-_debug "_set_host_ip name: $name, ip: $ip"
+_debug2 "_set_host_ip name: $name, ip: $ip"
 
 if grep -q "${name}$" /etc/hosts; then
 # insert

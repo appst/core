@@ -55,9 +55,14 @@ _c
 
 function _PNICS_dump() {  # <array prefix>
 local ptr_length=${1}_length  # ptr_length=PNICS_length
-local i
+
+[[ -z "${!ptr_length}" ]] && {
+_alert "empty $1"
+return 1
+}
 
 _debug "ptr_length: $ptr_length, {!ptr_length}: ${!ptr_length}"
+local i
 
 for ((i=1;i<=${!ptr_length};i++)); do
 
@@ -65,6 +70,7 @@ _PNICS_2env dump ${1}${i}
 
 printf "${1}${i}: %s, %s, %s %s %s\n" $dump_IP $dump_ip $dump_mnemonic $dump_type $dump_option1
 done
+
 }
 
 
@@ -137,7 +143,11 @@ __c
 
 function _PNICS_2setenv() {  # <array prefix> <variable prefix>
 local ptr_length=${1}_length
-local i
+
+[[ -z "${!ptr_length}" ]] && {
+_alert "empty $1"
+return 1
+}
 
 _debug "_PNICS_2setenv ptr_length: ${!ptr_length}"
 
@@ -146,6 +156,7 @@ _debug "_PNICS_2setenv ptr_length: ${!ptr_length}"
 #cat >> $PROVIDER_ENV <<!
 #export NICS=
 #!
+local i
 
 for ((i=1;i<=${!ptr_length};i++)); do
 

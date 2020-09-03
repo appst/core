@@ -99,7 +99,7 @@ _x
 
 
 function _open_server_firewall() {
-_debug2 "_open_server_firewall $@"
+_debug3 "_open_server_firewall $@"
 
 case $1 in
 MNIC_IP) local interface=MNIC;;
@@ -107,7 +107,7 @@ XNIC_IP) local interface=XNIC;;
 *) local interface=$1;;
 esac
 
-_debug2
+_debug3
 local ports=$2
 local comment=$3
 
@@ -120,7 +120,7 @@ else
 tcp=true  # default is tcp
 udp=false
 fi
-_debug2 "wfow7fs90fwjf interface: $interface, ports: $ports, comment: $comment, udp: $udp, tcp: $tcp"
+_debug3 "wfow7fs90fwjf interface: $interface, ports: $ports, comment: $comment, udp: $udp, tcp: $tcp"
 
 case $interface in
 127.0.0.1|localhost)
@@ -135,13 +135,13 @@ _udp_in_accept -i $MNIC_ -s ${MNIC_NETWORK}/${MNIC_PREFIX} -m multiport --dports
 _udp_out_accept -o $MNIC_ -d ${MNIC_NETWORK}/${MNIC_PREFIX} -m multiport --sports $ports -m conntrack --ctstate ESTABLISHED -m comment --comment "${comment}-server" $5
 fi
 if $tcp; then
-_debug2 "_tcp_in_accept -i $MNIC_ -s ${MNIC_NETWORK}/${MNIC_PREFIX} -m multiport --dports $ports -m conntrack --ctstate NEW,ESTABLISHED -m comment --comment "${comment}-server" $5"
+_debug3 "_tcp_in_accept -i $MNIC_ -s ${MNIC_NETWORK}/${MNIC_PREFIX} -m multiport --dports $ports -m conntrack --ctstate NEW,ESTABLISHED -m comment --comment "${comment}-server" $5"
 _tcp_in_accept -i $MNIC_ -s ${MNIC_NETWORK}/${MNIC_PREFIX} -m multiport --dports $ports -m conntrack --ctstate NEW,ESTABLISHED -m comment --comment "${comment}-server" $5
 _tcp_out_accept -o $MNIC_ -d ${MNIC_NETWORK}/${MNIC_PREFIX} -m multiport --sports $ports -m conntrack --ctstate ESTABLISHED -m comment --comment "${comment}-server" $5
 #_tcp_in_accept -i $MNIC_ -m multiport --dports $ports -m conntrack --ctstate NEW,ESTABLISHED -m comment --comment "${comment}-server"
 #_tcp_out_accept -o $MNIC_ -m multiport --sports $ports -m conntrack --ctstate ESTABLISHED -m comment --comment "${comment}-server"
 fi
-_debug2
+_debug3
 ;;
 XNIC)
 [[ -z "$XNIC_" ]] && { _alert '-z "$XNIC_"'; return 1; }
@@ -153,11 +153,11 @@ if $tcp; then
 #echo "_tcp_in_accept -i $MNIC_ -s ${MNIC_NETWORK}/${MNIC_PREFIX} -m multiport --dports $ports -m conntrack --ctstate NEW,ESTABLISHED -m comment --comment \"${comment}-server\""
 #_tcp_in_accept -i $XNIC_ -s ${XNIC_NETWORK}/${XNIC_PREFIX} -m multiport --dports $ports -m conntrack --ctstate NEW,ESTABLISHED -m comment --comment "${comment}-server"
 #_tcp_out_accept -o $XNIC_ -d ${XNIC_NETWORK}/${XNIC_PREFIX} -m multiport --sports $ports -m conntrack --ctstate ESTABLISHED -m comment --comment "${comment}-server"
-_debug2 "_tcp_in_accept -i $XNIC_ -m multiport --dports $ports -m conntrack --ctstate NEW,ESTABLISHED -m comment --comment "${comment}-server" $5"
+_debug3 "_tcp_in_accept -i $XNIC_ -m multiport --dports $ports -m conntrack --ctstate NEW,ESTABLISHED -m comment --comment "${comment}-server" $5"
 _tcp_in_accept -i $XNIC_ -m multiport --dports $ports -m conntrack --ctstate NEW,ESTABLISHED -m comment --comment "${comment}-server" $5
 _tcp_out_accept -o $XNIC_ -m multiport --sports $ports -m conntrack --ctstate ESTABLISHED -m comment --comment "${comment}-server" $5
 fi
-_debug2
+_debug3
 ;;
 NICSA)
 prev_=
@@ -189,21 +189,21 @@ prev_=$nic_
 done
 ;;
 FNICSA)
-_debug2 "{FNICSA[@]}: ${FNICSA[@]}"
+_debug3 "{FNICSA[@]}: ${FNICSA[@]}"
 prev_=
 for nic in "${FNICSA[@]}"; do
-_debug2 "nic: $nic"
+_debug3 "nic: $nic"
 nic_=${nic}_
-_debug2 "nic_: $nic_, prev_: $prev_"
+_debug3 "nic_: $nic_, prev_: $prev_"
 [[ "$nic_" == "$prev_" ]] && continue
-_debug2 "nic_: $nic_"
+_debug3 "nic_: $nic_"
 if [[ $nic == 'XNIC' ]]; then
-_debug2 "udp: $udp"
+_debug3 "udp: $udp"
 if $udp; then
 _udp_in_accept -i ${!nic_} -m multiport --dports $ports -m conntrack --ctstate NEW,ESTABLISHED -m comment --comment "${comment}-server" $5
 _udp_out_accept -o ${!nic_} -m multiport --sports $ports -m conntrack --ctstate ESTABLISHED -m comment --comment "${comment}-server" $5
 fi
-_debug2 "tcp: $tcp"
+_debug3 "tcp: $tcp"
 if $tcp; then
 _tcp_in_accept -i ${!nic_} -m multiport --dports $ports -m conntrack --ctstate NEW,ESTABLISHED -m comment --comment "${comment}-server" $5
 _tcp_out_accept -o ${!nic_} -m multiport --sports $ports -m conntrack --ctstate ESTABLISHED -m comment --comment "${comment}-server" $5
@@ -211,17 +211,17 @@ fi
 else
 local network=${nic_}NETWORK
 local prefix=${nic_}PREFIX
-_debug2 "network: $network, prefix: $prefix"
-_debug2 "!network: ${!network}, !prefix: ${!prefix}"
-_debug2 "$(env | grep MNIC)"
-_debug2 "udp: $udp"
+_debug3 "network: $network, prefix: $prefix"
+_debug3 "!network: ${!network}, !prefix: ${!prefix}"
+_debug3 "$(env | grep MNIC)"
+_debug3 "udp: $udp"
 if $udp; then
 #_udp_in_accept -i ${!nic_} -m multiport --dports $ports -m conntrack --ctstate NEW,ESTABLISHED -m comment --comment "${comment}-server"
 #_udp_out_accept -o ${!nic_} -m multiport --sports $ports -m conntrack --ctstate ESTABLISHED -m comment --comment "${comment}-server"
 _udp_in_accept -i ${!nic_} -s ${!network}/${!prefix} -m multiport --dports $ports -m conntrack --ctstate NEW,ESTABLISHED -m comment --comment "${comment}-server" $5
 _udp_out_accept -o ${!nic_} -d ${!network}/${!prefix} -m multiport --sports $ports -m conntrack --ctstate ESTABLISHED -m comment --comment "${comment}-server" $5
 fi
-_debug2 "tcp: $tcp"
+_debug3 "tcp: $tcp"
 if $tcp; then
 #echo _tcp_in_accept -i ${!nic_} -s ${!network}/${!prefix} -m multiport --dports $ports -m conntrack --ctstate NEW,ESTABLISHED -m comment --comment "${comment}-server"
 #echo _tcp_out_accept -o ${!nic_} -d ${!network}/${!prefix} -m multiport --sports $ports -m conntrack --ctstate ESTABLISHED -m comment --comment "${comment}-server"
@@ -265,7 +265,7 @@ _tcp_in_accept -i $XNIC_ -m multiport --dports $ports -m conntrack --ctstate NEW
 _tcp_out_accept -o $XNIC_ -m multiport --sports $ports -m conntrack --ctstate ESTABLISHED -m comment --comment "${comment}-server" $5
 fi
 else
-_debug2 "catch-all interface: $interface, ports: $ports, comment: $comment"
+_debug3 "catch-all interface: $interface, ports: $ports, comment: $comment"
 if $udp; then
 # $interface is an ip
 _udp_in_accept -s $interface -m multiport --dports $ports -m conntrack --ctstate NEW,ESTABLISHED -m comment --comment "${comment}-server" $5
@@ -279,7 +279,7 @@ fi
 fi
 ;;
 esac
-_debug2 "_open_server_firewall $@ - done"
+_debug3 "_open_server_firewall $@ - done"
 return 0
 }
 export -f _open_server_firewall
@@ -310,7 +310,7 @@ __c
 
 
 function _open_client_firewall() {
-_debug2 "_open_client_firewall $@"
+_debug3 "_open_client_firewall $@"
 
 case $1 in
 MNIC_IP) local interface=MNIC;;
@@ -330,13 +330,13 @@ else
 tcp=true  # default is tcp
 udp=false
 fi
-_debug2 "wfow7fs90fwjf2 interface: $interface, udp: $udp, tcp: $tcp"
+_debug3 "wfow7fs90fwjf2 interface: $interface, udp: $udp, tcp: $tcp"
 
 case $interface in
 MNIC)
 [[ -z "$MNIC_" ]] && { _alert '-z "$MNIC_"'; return 1; }
 if $tcp; then
-#_debug2 "dfdljljfd MNIC_: $MNIC_, MNIC_NETWORK: $MNIC_NETWORK, MNIC_PREFIX: $MNIC_PREFIX, ports: $ports, comment: $comment"
+#_debug3 "dfdljljfd MNIC_: $MNIC_, MNIC_NETWORK: $MNIC_NETWORK, MNIC_PREFIX: $MNIC_PREFIX, ports: $ports, comment: $comment"
 _tcp_out_accept -o $MNIC_ -d ${MNIC_NETWORK}/${MNIC_PREFIX} -m multiport --dports $ports -m conntrack --ctstate NEW,ESTABLISHED -m comment --comment "${comment}-client"
 _tcp_in_accept -i $MNIC_ -s ${MNIC_NETWORK}/${MNIC_PREFIX} -m multiport --sports $ports -m conntrack --ctstate ESTABLISHED -m comment --comment "${comment}-client"
 #_tcp_out_accept -o $MNIC_ -m multiport --dports $ports -m conntrack --ctstate NEW,ESTABLISHED -m comment --comment "${comment}-client"
@@ -362,7 +362,7 @@ fi
 ;;
 NICSA)
 for nic in "${NICSA[@]}"; do
-_debug2 "s9s6flf0wf nic: $nic"
+_debug3 "s9s6flf0wf nic: $nic"
 nic_=${nic}_
 if [[ $nic == 'XNIC' ]]; then
 if $tcp; then
@@ -389,7 +389,7 @@ done
 ;;
 FNICSA)
 for nic in "${FNICSA[@]}"; do
-_debug2 "slsfsfwwlfsofu nic: $nic"
+_debug3 "slsfsfwwlfsofu nic: $nic"
 nic_=${nic}_
 if [[ $nic == 'XNIC' ]]; then
 if $tcp; then
@@ -438,7 +438,7 @@ _udp_out_accept -o $XNIC_ -m multiport --dports $ports -m conntrack --ctstate NE
 _udp_in_accept -i $XNIC_ -m multiport --sports $ports -m conntrack --ctstate ESTABLISHED -m comment --comment "${comment}-client"
 fi
 else
-_debug2 "catch-all interface: $interface, ports: $ports, comment: $comment"
+_debug3 "catch-all interface: $interface, ports: $ports, comment: $comment"
 if $tcp; then
 # $interface is an ip
 _tcp_out_accept -d $interface -m multiport --dports $ports -m conntrack --ctstate NEW,ESTABLISHED -m comment --comment "${comment}-client"
@@ -452,7 +452,7 @@ fi
 fi
 ;;
 esac
-_debug2 "_open_client_firewall $@ - done"
+_debug3 "_open_client_firewall $@ - done"
 return 0
 }
 export -f _open_client_firewall

@@ -87,6 +87,12 @@ function _install() {
 sudo apt-get -y install $@
 }
 export -f _install
+
+function _is_installed() {
+$>/dev/null dpkg -l $1
+}
+export -f _is_installed
+
 ;;
 
 esac

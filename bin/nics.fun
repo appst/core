@@ -33,19 +33,29 @@ _PNICS_dump cnics
 _x
 
 # ----------
-#shopt -s expand_aliases  # 36hr bug
+shopt -s expand_aliases  # 36hr bug
 
 #alias _PNICS_2array='cnics_length=0; for nic in $PNICS; do cnics_length=$((cnics_length+1)); v=cnics${cnics_length}; eval "declare -a $v=(${nic//:/ })"; _PNICS_2array2 $v; done'
+alias _PNICS_2array='cnics_length=0; for nic in $PNICS; do cnics_length=$((cnics_length+1)); v=cnics${cnics_length}; declare -a "$v=(${nic//:/ })"; _PNICS_2array2 $v; done'
 
-function _PNICS_2array() {
+:<<\_s
+# i cannot use a function...
+
+function z_PNICS_2array() {
 cnics_length=0
 for nic in $PNICS; do
 cnics_length=$((cnics_length+1))
 v=cnics${cnics_length}
-eval "declare -a $v=(${nic//:/ })"
+echo "declare -a $v=(${nic//:/ })"
+#eval "declare -a $v=(${nic//:/ })"
+declare -a "$v=(${nic//:/ })"  # this is the problem - i cannot return an array from a function
 _PNICS_2array2 $v
 done
 }
+
+declare -a cnics1; z_PNICS_2array cnic cnics1
+_PNICS_2setenv cnics cnic
+_s
 
 function _PNICS_2array2() {
 local -n v=$1
@@ -91,31 +101,31 @@ local arr=$2
 
 local IPx=$arr[0]  # IPx=cnics1[0]
 
-#_debug "_PNICS_2env $@"
+_debug "_PNICS_2env $@"
 
 IPx=${!IPx}  # IPx=IP1-192.168.1.5
-#_debug "$i - IPx: $IPx"
+_debug "$i - IPx: $IPx"
 
 local IP=${IPx%-*}  # retain the part before the first hyphen (IP1)
 export ${prefix}_IP=$IP
-#_debug "export ${prefix}_IP=$IP"
+_debug "export ${prefix}_IP=$IP"
 
 local ip=${IPx#*-}  # retain the part after the first hyphen (MNIC_IP/controller.domain.com/1.2.3.4)
 [[ $ip =~ _IP$ ]] && ip=${!ip}  # ends with '_IP'
 export ${prefix}_ip=$ip
-#_debug "export ${prefix}_ip=$ip"
+_debug "export ${prefix}_ip=$ip"
 
 local mnemonic=$arr[1]  # mnenmonic=cnics1[1]
 export ${prefix}_mnemonic=${!mnemonic}  # cnics_menmonic=MNIC
-#_debug "export ${prefix}_mnemonic=${!mnemonic}"
+_debug "export ${prefix}_mnemonic=${!mnemonic}"
 
 local type=$arr[2]  # type=cnics1[2]
 export ${prefix}_type=${!type}  # cnics_menmonic=MNIC
-#_debug "export ${prefix}_type=${!type}"
+_debug "export ${prefix}_type=${!type}"
 
 local option1=$arr[3]  # option1=cnics1[3]
 export ${prefix}_option1=${!option1}  # cnics_option1=intnet-tunnel
-#_debug "export ${prefix}_option1=${!option1}"
+_debug "export ${prefix}_option1=${!option1}"
 }
 
 
@@ -154,11 +164,14 @@ __c
 function _PNICS_2setenv() {  # <array prefix> <variable prefix>
 local ptr_length=${1}_length
 
+local DEBUG=3
+
 [[ -z "${!ptr_length}" ]] && {
 _alert "empty $1"
 return 1
 }
 
+_debug "PNICS: $PNICS"
 _debug "_PNICS_2setenv ptr_length: ${!ptr_length}"
 
 #(( DEBUG > 0 )) && printf "\n#---> dynamically generated from: $(readlink --canonicalize $BASH_SOURCE)\n" >> $PROVIDER_ENV

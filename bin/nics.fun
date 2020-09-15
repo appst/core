@@ -35,7 +35,17 @@ _x
 # ----------
 #shopt -s expand_aliases  # 36hr bug
 
-alias _PNICS_2array='cnics_length=0; for nic in $PNICS; do cnics_length=$((cnics_length+1)); v=cnics${cnics_length}; eval "declare -a $v=(${nic//:/ })"; _PNICS_2array2 $v; done'
+#alias _PNICS_2array='cnics_length=0; for nic in $PNICS; do cnics_length=$((cnics_length+1)); v=cnics${cnics_length}; eval "declare -a $v=(${nic//:/ })"; _PNICS_2array2 $v; done'
+
+function _PNICS_2array() {
+cnics_length=0
+for nic in $PNICS; do
+cnics_length=$((cnics_length+1))
+v=cnics${cnics_length}
+eval "declare -a $v=(${nic//:/ })"
+_PNICS_2array2 $v
+done
+}
 
 function _PNICS_2array2() {
 local -n v=$1

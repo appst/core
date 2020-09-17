@@ -90,17 +90,17 @@ export -f _error
 #echo ssssllljlosuosufs
 #DEBUG=3
 
-_debug2 "whoami: $(whoami), PWD: $PWD, HOME: $HOME"
+_debug3 "whoami: $(whoami), PWD: $PWD, HOME: $HOME"
 
 _GENV_=true  # we don't export this value. in bash, subshells do not inherit aliases which we may have defined in init.d. to include those aliases in our environment we must reload our environment in subshells.
 
-_debug2 "OPT_PICASSO: $OPT_PICASSO, MNT_V: $MNT_V, PICASSO: $PICASSO"
+_debug3 "OPT_PICASSO: $OPT_PICASSO, MNT_V: $MNT_V, PICASSO: $PICASSO"
 
 # this script may be run within a host context which has its own OPT_PICASSO
 #OPT_PICASSO=${OPT_PICASSO:-/opt/picasso}; PGUEST=$PICASSO/core/guest
 #PICASSO=${PICASSO:-/opt/picasso}; PGUEST=$PICASSO/core/guest
 
-_debug2 "OPT_PICASSO: $OPT_PICASSO"
+_debug3 "OPT_PICASSO: $OPT_PICASSO"
 
 :<<\_c
 $PICASSO/core/init.d/??-*.sh  # originates from basebox
@@ -117,8 +117,6 @@ provisioners should not write to $PICASSO/core/init.d/ - they are distro files
 _c
 
 . $PICASSO/core/bin/picasso-init.sh $PICASSO/core/init.d/
-
-_debug3 sdoww0w020002022002
 
 . $PICASSO/core/bin/picasso-init.sh $PICASSO/core/guest/init.d/
 

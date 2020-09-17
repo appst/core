@@ -84,7 +84,7 @@ ubuntu)
 #shopt -s expand_aliases
 #alias _install='sudo apt-get -y install'
 function _install() {
-sudo apt-get -y install $@
+sudo apt-get -y install $@ 1>/dev/null
 }
 export -f _install
 

@@ -9,7 +9,7 @@ KV_STORE defined and not empty - load the appropriate handler - return 0
 KV_STORE defined and empty or not a valid handler - return 1
 _c
 
-echo "KV_STORE: $KV_STORE"
+_debug2 "KV_STORE: $KV_STORE"
 
 KV_STORE=redis
 

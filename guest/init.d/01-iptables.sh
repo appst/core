@@ -83,7 +83,7 @@ _open_server_firewall MNIC '53' "dns" UDP
 _x
 
 function _open_server_firewall() {
-_debug2 "_open_server_firewall $@"
+_debug3 "_open_server_firewall $@"
 
 case $1 in
 MNIC_IP) local interface=MNIC;;
@@ -166,12 +166,12 @@ prev_=$nic_
 done
 ;;
 FNICSA)
-_debug2 "{FNICSA[@]}: ${FNICSA[@]}"
+_debug3 "{FNICSA[@]}: ${FNICSA[@]}"
 prev_=
 for nic in "${FNICSA[@]}"; do
-_debug2 "nic: $nic"
+_debug3 "nic: $nic"
 nic_=${nic}_
-_debug2 "nic_: $nic_, prev_: $prev_"
+_debug3 "nic_: $nic_, prev_: $prev_"
 [[ "$nic_" == "$prev_" ]] && continue
 if [[ $nic == 'XNIC' ]]; then
 if $udp; then
@@ -231,7 +231,7 @@ _tcp_in_accept -i $XNIC_ -m multiport --dports $ports -m conntrack --ctstate NEW
 _tcp_out_accept -o $XNIC_ -m multiport --sports $ports -m conntrack --ctstate ESTABLISHED -m comment --comment "${comment}-server"
 fi
 else
-_debug2 "catch-all interface: $interface, ports: $ports, comment: $comment"
+_debug3 "catch-all interface: $interface, ports: $ports, comment: $comment"
 if $udp; then
 # $interface is an ip
 _udp_in_accept -s $interface -m multiport --dports $ports -m conntrack --ctstate NEW,ESTABLISHED -m comment --comment "${comment}-server"
@@ -276,7 +276,7 @@ _c
 
 
 function _open_client_firewall() {
-_debug2 "_open_client_firewall $@"
+_debug3 "_open_client_firewall $@"
 
 case $1 in
 MNIC_IP) local interface=MNIC;;
@@ -296,7 +296,7 @@ else
 tcp=true  # default is tcp
 udp=false
 fi
-_debug2 "wfow7fs90fwjf2 interface: $interface, udp: $udp, tcp: $tcp"
+_debug3 "wfow7fs90fwjf2 interface: $interface, udp: $udp, tcp: $tcp"
 
 case $interface in
 MNIC)
@@ -326,7 +326,7 @@ fi
 ;;
 NICSA)
 for nic in "${NICSA[@]}"; do
-_debug2 "s9s6flf0wf nic: $nic"
+_debug3 "s9s6flf0wf nic: $nic"
 nic_=${nic}_
 if [[ $nic == 'XNIC' ]]; then
 if $tcp; then
@@ -353,7 +353,7 @@ done
 ;;
 FNICSA)
 for nic in "${FNICSA[@]}"; do
-_debug2 "slsfsfwwlfsofu nic: $nic"
+_debug3 "slsfsfwwlfsofu nic: $nic"
 nic_=${nic}_
 if [[ $nic == 'XNIC' ]]; then
 if $tcp; then
@@ -402,7 +402,7 @@ _udp_out_accept -o $XNIC_ -m multiport --dports $ports -m conntrack --ctstate NE
 _udp_in_accept -i $XNIC_ -m multiport --sports $ports -m conntrack --ctstate ESTABLISHED -m comment --comment "${comment}-client"
 fi
 else
-_debug2 "catch-all interface: $interface, ports: $ports, comment: $comment"
+_debug3 "catch-all interface: $interface, ports: $ports, comment: $comment"
 if $tcp; then
 # $interface is an ip
 _tcp_out_accept -d $interface -m multiport --dports $ports -m conntrack --ctstate NEW,ESTABLISHED -m comment --comment "${comment}-client"

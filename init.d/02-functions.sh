@@ -76,11 +76,13 @@ export -f version
 
 
 # ----------
-_debug "DISTRO_NAME: $DISTRO_NAME"
+_debug "OS: $OS"
+#_debug "DISTRO_NAME: $DISTRO_NAME"
 
-case $DISTRO_NAME in
+#case "$DISTRO_NAME" in
+case "$OS" in
 
-ubuntu)
+debian|ubuntu)
 #shopt -s expand_aliases
 #alias _install='sudo apt-get -y install'
 function _install() {

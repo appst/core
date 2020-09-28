@@ -77,9 +77,7 @@ export -f version
 
 # ----------
 _debug "OS: $OS"
-#_debug "DISTRO_NAME: $DISTRO_NAME"
 
-#case "$DISTRO_NAME" in
 case "$OS" in
 
 debian|ubuntu)

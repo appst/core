@@ -12,7 +12,7 @@ _c
 # PNICS=<serialized NIC values>
 PNICS="IP1-192.168.1.9:MNIC:192.168.1.0 IP2-10.0.0.7:XNIC:10.0.0.0-promiscuous:provider-flat IP3-manual:TNIC:intnet-tunnel"
 
-alias _PNICS_2array='cnics_length=0; for nic in $PNICS; do cnics_length=$((cnics_length+1)); v=cnics${cnics_length}; echo "$v: $nic"; eval "declare -a $v=(${nic//:/ })"; _PNICS_2array2 $v; done'
+alias _PNICS_2array='cnics_length=0; for nic in $PNICS; do cnics_length=$((cnics_length+1)); v=cnics${cnics_length}; echo "$v: $nic"; declare -a $v=(${nic//:/ }); _PNICS_2array2 $v; done'
 
 # marshal $PNICS into environment - $PNICS -> env:cnics${n}[0...]
 _PNICS_2array
@@ -35,7 +35,6 @@ _x
 # ----------
 #shopt -s expand_aliases  # 36hr bug
 
-#alias _PNICS_2array='cnics_length=0; for nic in $PNICS; do cnics_length=$((cnics_length+1)); v=cnics${cnics_length}; eval "declare -a $v=(${nic//:/ })"; _PNICS_2array2 $v; done'
 alias _PNICS_2array='cnics_length=0; for nic in $PNICS; do cnics_length=$((cnics_length+1)); v=cnics${cnics_length}; declare -a "$v=(${nic//:/ })"; _PNICS_2array2 $v; done'
 
 :<<\_s

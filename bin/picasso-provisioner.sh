@@ -23,7 +23,7 @@ TEST=${TEST:-false}
 #DEBUG=3
 
 # ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
-_debug2 "@ $@"
+_debug3 "@ $@"
 
 [[ -n "$@" ]] && {
 
@@ -63,13 +63,13 @@ set --  # clear script arguments to prevent re-entry and parameter propagation t
 # ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
 _info "Provisioning '$PPROJ' with script '$PROVISIONER'"
 
-_debug2 "_run_once_on_entry STAGE: $STAGE"
+_debug3 "_run_once_on_entry STAGE: $STAGE"
 
 case $STAGE in
 
 development|production)
 
-_debug2 "xcvbsdwyisddsz MNT_V: $MNT_V"
+_debug3 "xcvbsdwyisddsz MNT_V: $MNT_V"
 
 if [[ -n "$MNT_V" ]]; then
 
@@ -138,7 +138,7 @@ _alert "Skipping STAGE: $STAGE"
 
 esac
 
-_debug2 "PICASSO: $PICASSO"
+_debug3 "PICASSO: $PICASSO"
 
 $TEST && {
 [[ -d $PICASSO/install ]] || _error "-d $PICASSO/install"

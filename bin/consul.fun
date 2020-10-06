@@ -171,8 +171,8 @@ export -f _kv_delete
 
 # ----------
 function _kv_set_file() {
-local key=$1
-local file=$2
+local file=$1
+local key=$2
 local type=${3:-application/zip}
 
 _debug "CONSUL_PROXY_ADDR: $CONSUL_PROXY_ADDR"
@@ -204,7 +204,7 @@ export -f _kv_set_file
 echo "hello world!" > ./bar
 wget --post-file=./bar $CONSUL_PROXY_ADDR/v1/kv/foo
 
-_kv_set_file foo ./bar
+_kv_set_file ./bar foo
 _x
 
 :<<\_j
@@ -229,7 +229,7 @@ _j
 :<<\_c
 . $PID_PICASSO/init.d/consul.env
 . $PICASSO/core/bin/consul.fun
-_kv_set_file SSH_PRIVATE_KEY $SSH_PRIVATE_KEY
+_kv_set_file $SSH_PRIVATE_KEY SSH_PRIVATE_KEY
 _kv_get_file SSH_PRIVATE_KEY
 _c
 :<<\_c

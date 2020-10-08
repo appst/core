@@ -12,6 +12,7 @@ shopt -s expand_aliases  # 36hr bug
 
 
 # ----------
+:<<\_s
 alias __t=': <<"__t"'
 alias __t-='alias __t=": <<\"__t\""'  # __t
 alias __t+='alias __t=""'
@@ -24,6 +25,7 @@ elif [[ ${TEST} -eq 0 ]]; then  # standard testing
 alias __t=''  # __t
 fi
 }
+_s
 
 
 # ----------

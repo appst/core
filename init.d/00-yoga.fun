@@ -11,35 +11,6 @@ _c
 
 (( PDEBUG < 3 )) || echo -e "\e[0;43m>>> ${BASH_SOURCE[0]}\e[0m"  #]
 
-
-:<<\_j
-shopt -s expand_aliases  # 36hr bug
-
-alias ~~~=': <<"~~~"'
-alias ~~=': <<"~~"'  # fedora was chopping off our first tilde, so this insures we still ignore our blocked out script
-alias __c=': <<"__c"'
-alias __s=': <<"__s"'
-alias __t=': <<"__t"'
-alias __x=': <<"__x"'
-alias __t-='alias __t=": <<\"__t\""'  # __t
-alias __t+='alias __t=""'
-
-:<<\_c
-printf '[FAIL] 00-bash-aliases.sh - %s%s%s not interpreted as a comment\n' '_' '_' 'c'
-exit 1  # break out
-_c
-
-/usr/bin/env | /bin/grep -q '^TEST=' && {
-if [[ $TEST -lt 0 ]]; then  # no testing
-alias __t=': <<"__t"'
-elif [[ $TEST -eq 0 ]]; then  # standard testing
-alias __t=''  # __t
-fi
-}
-
-#&>/dev/null alias __c || . $PGUEST/init.d/00-yoga.fun  # __c
-_j
-
 :<<\_c
 printf '[FAIL] 00-bash-aliases.sh - %s%s%s not interpreted as a comment\n' '_' '_' 'c'
 exit 1  # break out

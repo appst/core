@@ -33,7 +33,7 @@ wsl*)
 # wslpath is missing the '-p' option
 
 function convertpath() {
-if [[ $1 == '-u' && $2 =~ /mnt/ ]]; then
+if [[ "$1" == '-u' && $2 =~ /mnt/ ]]; then
 echo $2
 else
 [[ -n "$@" ]] && echo $($PROOT/bin/wslpath.py "$@")

@@ -164,7 +164,7 @@ prev_=
 for nic in "${NICSA[@]}"; do
 nic_=${nic}_
 [[ "$nic_" == "$prev_" ]] && continue
-if [[ $nic == 'XNIC' ]]; then
+if [[ "$nic" == 'XNIC' ]]; then
 if $udp; then
 _udp_in_accept -i ${!nic_} -m multiport --dports $ports -m conntrack --ctstate NEW,ESTABLISHED -m comment --comment "${comment}-server" $5
 _udp_out_accept -o ${!nic_} -m multiport --sports $ports -m conntrack --ctstate ESTABLISHED -m comment --comment "${comment}-server" $5
@@ -197,7 +197,7 @@ nic_=${nic}_
 _debug3 "nic_: $nic_, prev_: $prev_"
 [[ "$nic_" == "$prev_" ]] && continue
 _debug3 "nic_: $nic_"
-if [[ $nic == 'XNIC' ]]; then
+if [[ "$nic" == 'XNIC' ]]; then
 _debug3 "udp: $udp"
 if $udp; then
 _udp_in_accept -i ${!nic_} -m multiport --dports $ports -m conntrack --ctstate NEW,ESTABLISHED -m comment --comment "${comment}-server" $5
@@ -364,7 +364,7 @@ NICSA)
 for nic in "${NICSA[@]}"; do
 _debug3 "s9s6flf0wf nic: $nic"
 nic_=${nic}_
-if [[ $nic == 'XNIC' ]]; then
+if [[ "$nic" == 'XNIC' ]]; then
 if $tcp; then
 _tcp_out_accept -o ${!nic_} -m multiport --dports $ports -m conntrack --ctstate NEW,ESTABLISHED -m comment --comment "${comment}-client"
 _tcp_in_accept -i ${!nic_} -m multiport --sports $ports -m conntrack --ctstate ESTABLISHED -m comment --comment "${comment}-client"
@@ -391,7 +391,7 @@ FNICSA)
 for nic in "${FNICSA[@]}"; do
 _debug3 "slsfsfwwlfsofu nic: $nic"
 nic_=${nic}_
-if [[ $nic == 'XNIC' ]]; then
+if [[ "$nic" == 'XNIC' ]]; then
 if $tcp; then
 _tcp_out_accept -o ${!nic_} -m multiport --dports $ports -m conntrack --ctstate NEW,ESTABLISHED -m comment --comment "${comment}-client"
 _tcp_in_accept -i ${!nic_} -m multiport --sports $ports -m conntrack --ctstate ESTABLISHED -m comment --comment "${comment}-client"

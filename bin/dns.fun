@@ -137,7 +137,7 @@ _dns_get ${CONSUL_NODE_NAME}.${CONSUL_DATACENTER}${SUB}
 _x
 
 
-if [[ $1 != *. ]]; then
+if [[ "$1" != *. ]]; then
 
 # $1 does not end with a period
 # www
@@ -402,7 +402,7 @@ function _dns_get() {
 
 # ----------
 :<<\_s
-if [[ $1 != *. ]]; then
+if [[ "$1" != *. ]]; then
 
 # www
 

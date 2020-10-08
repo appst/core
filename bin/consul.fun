@@ -101,7 +101,7 @@ _info "vault kv put secret/$PID identity=$IDENTITY_MANAGEMENT_IP"
 
 1>/dev/null vault kv put secret/$PID identity=$IDENTITY_MANAGEMENT_IP
 identity_ip=$(vault kv get -field identity -format table secret/$PID)
-[[ $identity_ip == $IDENTITY_MANAGEMENT_IP ]] || _error "identity_ip/$identity_ip != IDENTITY_MANAGEMENT_IP/$IDENTITY_MANAGEMENT_IP"
+[[ "$identity_ip" == "$IDENTITY_MANAGEMENT_IP" ]] || _error "identity_ip/$identity_ip != IDENTITY_MANAGEMENT_IP/$IDENTITY_MANAGEMENT_IP"
 }
 __s
 

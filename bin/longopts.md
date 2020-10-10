@@ -1,3 +1,11 @@
+
+:<<\_c
+bootstrap --help  # -v ${longopts[help]}, ${!longopts[help]} NOT DEFINED
+bootstrap --help=command  # -v ${longopts[help]}, ${!longopts[help]}=command
+bootstrap help  # $@ == 'help'
+_c
+
+
 ----------
 # longopts replaces this...
 

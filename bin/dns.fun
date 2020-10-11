@@ -12,11 +12,11 @@ _dns_set ${PHOST}.bit.cafe. 10.0.0.9
 FED_PQDN=bit.cafe _dns_set $PHOST 10.0.0.9
 FED_PQDN=picasso.digital _dns_get identity
 
-FED_PQDN=bit.cafe DNS_KEY_PATH=$PWORK/$PID/.picasso/${FED_PQDN}.key _dns_set $PHOST 10.0.0.9
+FED_PQDN=bit.cafe DNS_KEY_PATH=$PID_PICASSO/${FED_PQDN}.key _dns_set $PHOST 10.0.0.9
 
 _dns_set $PNAME $ip
-FED_PQDN=bit.cafe DNS_KEY_PATH=$PWORK/$PID/.picasso/${FED_PQDN}.key _dns_set $PNAME $ip
-FED_PQDN=bit.cafe DNS_KEY_PATH=$PWORK/$PID/.picasso/${FED_PQDN}.key _dns_set test 192.168.1.254
+FED_PQDN=bit.cafe DNS_KEY_PATH=$PID_PICASSO/${FED_PQDN}.key _dns_set $PNAME $ip
+FED_PQDN=bit.cafe DNS_KEY_PATH=$PID_PICASSO/${FED_PQDN}.key _dns_set test 192.168.1.254
 
 _dns_get ${PHOST}.${FED_PQDN}
 _c
@@ -245,7 +245,7 @@ zone ${FED_PQDN}.
 _x
 :<<\_x
 FED_PQDN=picasso.digital
-key=$PWORK/$PID/.picasso/${FED_PQDN}.key
+key=$PID_PICASSO/${FED_PQDN}.key
 fqdn=picasso.digital
 ip=192.168.1.250
 cat <<! | nsupdate -k $key
@@ -257,7 +257,7 @@ send
 !
 
 FED_PQDN=bit.cafe
-key=$PWORK/$PID/.picasso/${FED_PQDN}.key
+key=$PID_PICASSO/${FED_PQDN}.key
 fqdn=test.bit.cafe
 ip=192.168.1.250
 cat <<! | nsupdate -k $key

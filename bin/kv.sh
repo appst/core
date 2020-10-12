@@ -12,11 +12,15 @@ prov-sys.sh {
 . picasso-guest.sh {
 }
 _c
+:<<\_c
+kv.${FED_PQDN} is registered in dns as the Kv endpoint
+redis.${FED_PQDN} would work as well; however, the generic 'kv' enables us to use any KV_STORE at kv.${FED_PQDN}
+_c
 
 _debug2 "KV_STORE: $KV_STORE"
 
 #[[ -v KV_STORE ]] || return 1
-KV_STORE=${KV_STORE:-redis}
+KV_STORE=${KV_STORE:-redis}  # redis|consul|etcd...
 
 case $KV_STORE in
 
@@ -31,6 +35,7 @@ KV_PORT=${KV_PORT:-$CONSUL_PORT}
 
 . $OPT_PICASSO/bin/consul.fun
 !
+#KV_IP=${KV_IP:-consul.${FED_PQDN}}
 ;;
 
 redis)
@@ -44,10 +49,10 @@ KV_PORT=${KV_PORT:-$REDIS_PORT}
 
 . $OPT_PICASSO/bin/redis.fun
 !
+#KV_IP=${KV_IP:-redis.${FED_PQDN}}
 ;;
 
 *) return 1;;
 esac
 
-#return 0
 true

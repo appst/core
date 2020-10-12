@@ -5,6 +5,11 @@ initializes the KV runtime of the guest
 
 prov-sys.sh {
 . $PICASSO/core/bin/kv.sh
+[[ -n "$MEMBER_PQDN" ]] && {
+#[[ -n "$KV_STORE" ]] && ln -s $PICASSO/core/bin/kv.fun $OPT_PICASSO/bin/kv.fun
+}
+}
+. picasso-guest.sh {
 }
 _c
 

@@ -7,10 +7,10 @@ load provisioning environment
 
 Host...
 . $PICASSO/core/bin/picasso-init.sh $PROOT/bin/host/init.d/
-PDEBUG=3 . $PICASSO/core/bin/picasso-init.sh $PWORK/$PID/.picasso/init.d/
+PDEBUG=3 . $PICASSO/core/bin/picasso-init.sh $PID_PICASSO/init.d/
 
 Guest...
-. $PICASSO/core/bin/picasso-init.sh $PGUEST/init.d/
+. $PICASSO/core/bin/picasso-init.sh $OPT_PICASSO/init.d/
 _c
 
 :<<\_c

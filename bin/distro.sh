@@ -4,7 +4,7 @@
 # . /vagrant/.picasso/distro.sh
 
 # or usage: direct all variables to a file that can subsequently loaded in the environment
-# /vagrant/.picasso/distro.sh $PGUEST/init.d/0-distro.sh && . $PGUEST/init.d/0-distro.sh
+# /vagrant/.picasso/distro.sh $OPT_PICASSO/init.d/0-distro.sh && . $OPT_PICASSO/init.d/0-distro.sh
 
 :<<\_c
 
@@ -12,9 +12,9 @@ test...
 $PICASSO/core/bin/distro.sh 0-distro.sh && cat 0-distro.sh
 
 usage...
-/vagrant/.picasso/distro.sh $PGUEST/init.d/0-distro.sh && . $PGUEST/init.d/0-distro.sh
+/vagrant/.picasso/distro.sh $OPT_PICASSO/init.d/0-distro.sh && . $OPT_PICASSO/init.d/0-distro.sh
 
-$PICASSO/core/bin/distro.sh $PGUEST/init.d/00-distro.sh && . $PGUEST/init.d/00-distro.sh
+$PICASSO/core/bin/distro.sh $OPT_PICASSO/init.d/00-distro.sh && . $OPT_PICASSO/init.d/00-distro.sh
 _c
 
 

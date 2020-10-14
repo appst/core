@@ -14,7 +14,7 @@ Guest...
 _c
 
 :<<\_c
-environment files ($PGUEST/init.d/*) load before distro files ($PICASSO/core/init.d/*) so they can affect how the distro files load
+environment files ($OPT_PICASSO/init.d/*) load before distro files ($PICASSO/core/init.d/*) so they can affect how the distro files load
 
 /usr/bin/sort will list '.' files before numeric files
 i want the numeric files to run before the '.' files, so i first load numeric files, and then the non-numeric files

@@ -12,14 +12,14 @@ export -f _debug_firewall
 
 # ---------- ---------- ---------- ---------- ----------
 :<<\_c
-copies all rules to $PGUEST/iptables and applies the rule ephemerally
-using this indirect function, persistent iptables changes can then be made centrally by applying the rules accumulated in $PGUEST/iptables
+copies all rules to $OPT_PICASSO/iptables and applies the rule ephemerally
+using this indirect function, persistent iptables changes can then be made centrally by applying the rules accumulated in $OPT_PICASSO/iptables
 # $1:rule
 _c
 
 function _iptables() {
 
-echo "$1" >> $PGUEST/iptables
+echo "$1" >> $OPT_PICASSO/iptables
 
 iptables $1
 }

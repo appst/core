@@ -112,7 +112,6 @@ _c
 
 # ----------
 :<<\_c
-provisioners write configuration to $PGUEST/init.d/
 provisioners write configuration to $OPT_PICASSO/init.d/
 provisioners should not write to $PICASSO/core/init.d/ - they are distro files
 _c

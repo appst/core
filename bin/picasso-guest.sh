@@ -118,14 +118,16 @@ _c
 
 . $PICASSO/core/bin/picasso-init.sh $PICASSO/core/init.d/
 
-. $PICASSO/core/bin/picasso-init.sh $PICASSO/core/guest/init.d/  # TODO: deprecate - why two sources + move fix prov-sys
+#. $PICASSO/core/bin/picasso-init.sh $PICASSO/core/guest/init.d/  # TODO: deprecate - why two sources + move fix prov-sys
 . $PICASSO/core/bin/picasso-init.sh $OPT_PICASSO/init.d/
 
+:<<\_s
 for script in $(/usr/bin/find $PICASSO/core/guest/network.d/ -maxdepth 1 -name '*.env' \( -type l -o -type f \) | /usr/bin/sort); do
 #_debug3 "sewttwree script: $script"
 . $script || _error ". $script"
 #_debug3 "s0fs080 script: $script"
 done
+_s
 
 _debug3 "sdgsghweiytyt924"
 

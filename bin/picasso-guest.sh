@@ -119,7 +119,13 @@ _c
 . $PICASSO/core/bin/picasso-init.sh $PICASSO/core/init.d/
 
 #. $PICASSO/core/bin/picasso-init.sh $PICASSO/core/guest/init.d/  # TODO: deprecate - why two sources + move fix prov-sys
+if [[ -v PWORK ]]; then
+echo 111
+. $PICASSO/core/bin/picasso-init.sh $PID_PICASSO/init.d/
+else
+echo 222222
 . $PICASSO/core/bin/picasso-init.sh $OPT_PICASSO/init.d/
+fi
 
 :<<\_s
 for script in $(/usr/bin/find $PICASSO/core/guest/network.d/ -maxdepth 1 -name '*.env' \( -type l -o -type f \) | /usr/bin/sort); do

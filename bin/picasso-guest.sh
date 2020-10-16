@@ -94,13 +94,13 @@ _debug3 "whoami: $(whoami), PWD: $PWD, HOME: $HOME"
 
 _GENV_=true  # we don't export this value. in bash, subshells do not inherit aliases which we may have defined in init.d. to include those aliases in our environment we must reload our environment in subshells.
 
-_debug3 "OPT_PICASSO: $OPT_PICASSO, MNT_V: $MNT_V, PICASSO: $PICASSO"
+_debug3 "ROOT_PICASSO: $ROOT_PICASSO, MNT_V: $MNT_V, PICASSO: $PICASSO"
 
-# this script may be run within a host context which has its own OPT_PICASSO
-#OPT_PICASSO=${OPT_PICASSO:-/opt/picasso}; PGUEST=$PICASSO/core/guest
+# this script may be run within a host context which has its own ROOT_PICASSO
+#ROOT_PICASSO=${ROOT_PICASSO:-/opt/picasso}; PGUEST=$PICASSO/core/guest
 #PICASSO=${PICASSO:-/opt/picasso}; PGUEST=$PICASSO/core/guest
 
-_debug3 "OPT_PICASSO: $OPT_PICASSO"
+_debug3 "ROOT_PICASSO: $ROOT_PICASSO"
 
 :<<\_c
 $PICASSO/core/init.d/??-*.sh  # originates from basebox
@@ -112,20 +112,20 @@ _c
 
 # ----------
 :<<\_c
-provisioners write configuration to $OPT_PICASSO/init.d/
+provisioners write configuration to $ROOT_PICASSO/init.d/
 provisioners should not write to $PICASSO/core/init.d/ - they are distro files
 _c
 
 . $PICASSO/core/bin/picasso-init.sh $PICASSO/core/init.d/
 
 #. $PICASSO/core/bin/picasso-init.sh $PICASSO/core/guest/init.d/  # TODO: deprecate - why two sources + move fix prov-sys
-if [[ -v PWORK ]]; then
-echo 111
-. $PICASSO/core/bin/picasso-init.sh $PID_PICASSO/init.d/
-else
-echo 222222
-. $PICASSO/core/bin/picasso-init.sh $OPT_PICASSO/init.d/
-fi
+#if [[ -v PWORK ]]; then
+#echo 111
+#. $PICASSO/core/bin/picasso-init.sh $PID_PICASSO/init.d/
+#else
+#echo 222222
+. $PICASSO/core/bin/picasso-init.sh $ROOT_PICASSO/init.d/
+#fi
 
 :<<\_s
 for script in $(/usr/bin/find $PICASSO/core/guest/network.d/ -maxdepth 1 -name '*.env' \( -type l -o -type f \) | /usr/bin/sort); do

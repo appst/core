@@ -10,11 +10,11 @@ Host...
 PDEBUG=3 . $PICASSO/core/bin/picasso-init.sh $PID_PICASSO/init.d/
 
 Guest...
-. $PICASSO/core/bin/picasso-init.sh $OPT_PICASSO/init.d/
+. $PICASSO/core/bin/picasso-init.sh $ROOT_PICASSO/init.d/
 _c
 
 :<<\_c
-environment files ($OPT_PICASSO/init.d/*) load before distro files ($PICASSO/core/init.d/*) so they can affect how the distro files load
+environment files ($ROOT_PICASSO/init.d/*) load before distro files ($PICASSO/core/init.d/*) so they can affect how the distro files load
 
 /usr/bin/sort will list '.' files before numeric files
 i want the numeric files to run before the '.' files, so i first load numeric files, and then the non-numeric files

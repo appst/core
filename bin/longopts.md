@@ -22,7 +22,7 @@ done
 
 ----------
 # test - works with empty assignments
-. $OPT_PICASSO/core/bin/longopts.sh --test=1 --test2= --test3=3
+. $ROOT_PICASSO/core/bin/longopts.sh --test=1 --test2= --test3=3
 for opt in "${!longopts[@]}"; do  # keys
 val=${longopts[$opt]}
 echo "opt: $opt, val: $val"

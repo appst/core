@@ -1,8 +1,8 @@
 #####
 #__c
-#. $OPT_PICASSO/core/bin/longopts.sh --test=TEST
-#. $OPT_PICASSO/core/bin/longopts.sh create --dproj=dhcp
-#. $OPT_PICASSO/core/bin/longopts.sh --dproj=dhcp create
+#. $ROOT_PICASSO/core/bin/longopts.sh --test=TEST
+#. $ROOT_PICASSO/core/bin/longopts.sh create --dproj=dhcp
+#. $ROOT_PICASSO/core/bin/longopts.sh --dproj=dhcp create
 #
 ##_debug "${!longopts[@]}"
 #__c

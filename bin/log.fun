@@ -2,7 +2,7 @@
 # ---------- ---------- ---------- ---------- ----------
 # http://stackoverflow.com/questions/11904907/redirect-stdout-and-stderr-to-function
 
-YOGA_LOGFILE=${YOGA_LOGFILE:-$OPT_PICASSO/log/installs}
+YOGA_LOGFILE=${YOGA_LOGFILE:-$ROOT_PICASSO/log/installs}
 YOGA_LOGSPEC=${YOGA_LOGSPEC:-$_TOP_:$LINENO}  # default of what to include in log
 
 function _log() {

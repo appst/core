@@ -809,7 +809,7 @@ ls $PICASSO/install
 [FAIL] appending rule in default chain after its traffic has already been dropped
 _s
 
-_debug "trusted_nic: $trusted_nic"
+_debug "trusted_nic: $trusted_nic, trusted_network: $trusted_network"
 
 # ----------
 # ssh from a remote host into the vm via vagrant

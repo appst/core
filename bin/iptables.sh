@@ -162,7 +162,6 @@ _j
 
 # ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
 function _iptables_provision() {
-#_fin ":${FUNCNAME}"
 
 case $OS in
 
@@ -222,13 +221,11 @@ exit 1
 
 esac
 
-#_fout ":${FUNCNAME}"
 }
 
 
 # ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
 function _build_default_chain() {
-#_fin ":${FUNCNAME}"
 
 [[ -n $MNIC_ ]] && {
 trusted_nic=$MNIC_
@@ -567,13 +564,11 @@ $IPT -A OUTPUT -p tcp -j TCP_OUT
 :<<\_x
 sudo iptables -L TCP_IN
 _x
-#_fout ":${FUNCNAME}"
 }
 
 
 # ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
 function _iptables-input-accept-forward-accept-output-accept() {
-#_fin ":${FUNCNAME}"
 
 _debug_firewall "_iptables-input-accept-forward-accept-output-accept"
 
@@ -601,13 +596,11 @@ _debug_firewall sfshjlsdf
 /sbin/iptables -A OUTPUT -j LOG -m limit --limit 12/min --log-level 4 --log-prefix 'IPT OUTPUT ACCEPT: '
 }
 
-#_fout ":${FUNCNAME}"
 }
 
 
 # ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
 function _iptables-input-drop-forward-drop-output-accept() {
-#_fin
 
 _debug_firewall "_iptables-input-drop-forward-drop-output-accept"
 
@@ -652,7 +645,6 @@ _s
 
 /sbin/iptables -Z
 
-#_fout ":${FUNCNAME}"
 }
 
 
@@ -663,7 +655,6 @@ http://www.thegeekstuff.com/2011/03/iptables-inbound-and-outbound-rules/
 _c
 
 function _iptables-input-drop-forward-drop-output-drop() {
-#_fin ":${FUNCNAME}"
 
 _debug_firewall "_iptables-input-drop-forward-drop-output-drop"
 
@@ -711,7 +702,6 @@ _s
 
 /sbin/iptables -Z
 
-#_fout ":${FUNCNAME}"
 }
 
 
@@ -819,6 +809,7 @@ ls $PICASSO/install
 [FAIL] appending rule in default chain after its traffic has already been dropped
 _s
 
+_debug "trusted_nic: $trusted_nic"
 
 # ----------
 # ssh from a remote host into the vm via vagrant

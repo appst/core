@@ -70,6 +70,8 @@ alias _udp_out_drop="sudo /sbin/iptables -A UDP_OUT -p udp -j DROP "
 fi
 _j
 
+echo sdsdlfsdflsdlfjlsdjflsdjflsjf
+
 # ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
 :<<\_c
 _open_server_firewall <interface> <port/s> <comment> <type>

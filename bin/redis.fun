@@ -22,7 +22,7 @@ local port=${REDIS_PORT:-$KV_PORT}
 #_debug "_get_kv ip: $ip, port: $port"  # don't return anything
 
 #redis-cli -h $REDIS_IP -p $REDIS_PORT get $1
-redis-cli -h $ip -p $port get $1 | tr -d '\n'
+1>/dev/null redis-cli -h $ip -p $port get $1 | tr -d '\n'
 }
 export -f _kv_get
 
@@ -30,7 +30,7 @@ export -f _kv_get
 # ----------
 function _kv_set() {
 
-redis-cli -h $REDIS_IP -p $REDIS_PORT set $1 $2
+1>/dev/null redis-cli -h $REDIS_IP -p $REDIS_PORT set $1 $2
 }
 export -f _kv_set
 
@@ -38,7 +38,7 @@ export -f _kv_set
 # ----------
 function _kv_delete() {
 
-redis-cli -h $REDIS_IP -p $REDIS_PORT del $1
+1>/dev/null redis-cli -h $REDIS_IP -p $REDIS_PORT del $1
 }
 export -f _kv_delete
 
@@ -50,7 +50,7 @@ _kv_set_file [file] <key>
 _c
 function _kv_set_file() {
 
-redis-cli -h $REDIS_IP -p $REDIS_PORT -x set $2 < $1
+1>/dev/null redis-cli -h $REDIS_IP -p $REDIS_PORT -x set $2 < $1
 }
 export -f _kv_set_file
 
@@ -66,13 +66,13 @@ function _kv_get_file() {
 
 if [[ -n "$2" ]]; then
 
-redis-cli -h $REDIS_IP -p $REDIS_PORT get $1 > $2
+1>/dev/null redis-cli -h $REDIS_IP -p $REDIS_PORT get $1 > $2
 
 else
 
 f=$(mktemp -t picasso.XXXXXXXX) || return 1
 
-redis-cli -h $REDIS_IP -p $REDIS_PORT get $1 > $f
+1>/dev/null redis-cli -h $REDIS_IP -p $REDIS_PORT get $1 > $f
 
 echo $f
 fi

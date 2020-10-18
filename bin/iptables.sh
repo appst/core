@@ -257,7 +257,7 @@ cat <<EOF >> /etc/resolv.conf
 nameserver 8.8.8.8
 EOF
 
-for ip in $(</etc/resolv.conf | grep nameserver | awk '{print $2}')
+for ip in $(grep nameserver /etc/resolv.conf | awk '{print $2}')
 do
 echo "nameserver: $ip"
 done
@@ -268,7 +268,7 @@ _x
 
 #for ip in $DNS_SERVER
 
-for ip in $(</etc/resolv.conf | grep "^nameserver" | awk '{print $2}')
+for ip in $(grep "^nameserver" /etc/resolv.conf | awk '{print $2}')
 do
 
 #iptables -A OUTPUT -p tcp --dport 53 -m conntrack --ctstate NEW -m comment --comment "$_TOP_:$LINENO" -j ACCEPT

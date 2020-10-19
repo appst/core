@@ -22,7 +22,7 @@ local port=${REDIS_PORT:-$KV_PORT}
 #_debug "_get_kv ip: $ip, port: $port"  # don't return anything
 
 #redis-cli -h $REDIS_IP -p $REDIS_PORT get $1
-1>/dev/null redis-cli -h $ip -p $port get $1 | tr -d '\n'
+redis-cli -h $ip -p $port get $1 | tr -d '\n'
 }
 export -f _kv_get
 
@@ -66,13 +66,13 @@ function _kv_get_file() {
 
 if [[ -n "$2" ]]; then
 
-1>/dev/null redis-cli -h $REDIS_IP -p $REDIS_PORT get $1 > $2
+redis-cli -h $REDIS_IP -p $REDIS_PORT get $1 > $2
 
 else
 
 f=$(mktemp -t picasso.XXXXXXXX) || return 1
 
-1>/dev/null redis-cli -h $REDIS_IP -p $REDIS_PORT get $1 > $f
+redis-cli -h $REDIS_IP -p $REDIS_PORT get $1 > $f
 
 echo $f
 fi

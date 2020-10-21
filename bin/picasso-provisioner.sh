@@ -92,24 +92,24 @@ other modules are installed on a first come, first served, basis
 first come first served makes sense during provisioning, since the files should not change mid-provisioning
 _c
 [[ -d "$PICASSO/install" ]] || {
-_debug2
+_debug3
 sudo mkdir $PICASSO/install
 sudo cp -fr $MNT_V/install/* $PICASSO/install/
 }
 
 [[ -d "$PICASSO/custom" ]] || {
-_debug2
+_debug3
 sudo mkdir $PICASSO/custom
 sudo cp -fr $MNT_V/custom/* $PICASSO/custom/
 }
 
 elif [[ -n "$PDGIT" ]]; then
 
-_debug2 "_install git"
+_debug3 "_install git"
 
 _is_installed git || _install git
 
-_debug2 "PICASSO: $PICASSO"
+_debug3 "PICASSO: $PICASSO"
 _debug3 "$(ls -la $PICASSO)"
 
 1>/dev/null pushd $PICASSO

@@ -21,7 +21,7 @@ function _set_host_ip() {
 local name=$1
 local ip=$2  # MNIC_IP/XNIC_IP/
 
-_info "_set_host_ip $name $ip"
+_debug3 "_set_host_ip $name $ip"
 
 case $ip in
 MNIC_IP|XNIC_IP) ip=${!ip} ;;

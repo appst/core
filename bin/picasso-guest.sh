@@ -93,6 +93,7 @@ export -f _error
 _debug3 "whoami: $(whoami), PWD: $PWD, HOME: $HOME"
 
 _GENV_=true  # we don't export this value. in bash, subshells do not inherit aliases which we may have defined in init.d. to include those aliases in our environment we must reload our environment in subshells.
+#declare -r -g _GENV_=1
 
 _debug3 "ROOT_PICASSO: $ROOT_PICASSO, MNT_V: $MNT_V, PICASSO: $PICASSO"
 

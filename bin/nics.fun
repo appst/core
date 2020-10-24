@@ -192,7 +192,7 @@ mnemonic=${!mnemonic}
 export $mnemonic=nic${n}  # MNIC=nic1
 
 _C=${mnemonic}_C  # from env.sh(cookbook)
-[[ -z "${!_C}" ]] && _alert "-z \$${mnemonic}_C"  # insure environment exists
+[[ -z "${!_C}" ]] && _alert "-z \${mnemonic}_C"  # insure environment exists
 _NETMASK=${mnemonic}_NETMASK
 _PREFIX=${mnemonic}_PREFIX
 _BROADCAST=${mnemonic}_BROADCAST

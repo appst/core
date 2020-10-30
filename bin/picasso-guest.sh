@@ -25,7 +25,7 @@ function _debug() {
     local l=${#BASH_LINENO[@]}
     local f=${BASH_SOURCE[1]}
     f=$(basename ${f:-#})
-    echo -e "\e[1;32m${f}:${BASH_LINENO[-$l]} $@\e[0m"  #]
+    echo -e "\e[1;32m${f}:${BASH_LINENO[-$l]} $@\e[0m"  #] | tee $PICASSO_LOG
   }
 true
 }
@@ -36,7 +36,7 @@ function _debug2() {
    local l=${#BASH_LINENO[@]}
     local f=${BASH_SOURCE[1]}
     f=$(basename ${f:-#})
-    echo -e "\e[1;32m${f}:${BASH_LINENO[-$l]} $@\e[0m"  #]
+    echo -e "\e[1;32m${f}:${BASH_LINENO[-$l]} $@\e[0m"  #] | tee $PICASSO_LOG
   } || true
 }
 export -f _debug2
@@ -46,7 +46,7 @@ function _debug3() {
    local l=${#BASH_LINENO[@]}
     local f=${BASH_SOURCE[1]}
     f=$(basename ${f:-#})
-    echo -e "\e[1;32m${f}:${BASH_LINENO[-$l]} $@\e[0m"  #]
+    echo -e "\e[1;32m${f}:${BASH_LINENO[-$l]} $@\e[0m"  #] | tee $PICASSO_LOG
   } || true
 }
 export -f _debug3
@@ -55,7 +55,7 @@ export -f _debug3
 # ----------
 #alias _alert='1>&2 echo -e "\e[1;41m${_TOP_:-$0}:$LINENO \e[0m"'  #]
 function _alert() {
-  1>&2 echo -e "\e[1;41m${_TOP_:-$0}:$LINENO $1 \e[0m"  #]
+  1>&2 echo -e "\e[1;41m${_TOP_:-$0}:$LINENO $1 \e[0m"  #] | tee $PICASSO_LOG
 }
 export -f _alert
 
@@ -63,7 +63,7 @@ export -f _alert
 # ----------
 function _info() {
 (( DEBUG > -1 || PDEBUG > -1 )) && {
-echo -e "\e[0;32mINFO: $@ \e[0m"  #]
+echo -e "\e[0;32mINFO: $@ \e[0m"  #] | tee $PICASSO_LOG
 }
 }
 export -f _info
@@ -71,14 +71,14 @@ export -f _info
 
 # ----------
 function _warn() {
-(( DEBUG < -1 )) ||  >&2 echo -e "\e[1;31mWARNING: $1 \e[0m"  #]
+(( DEBUG < -1 )) ||  >&2 echo -e "\e[1;31mWARNING: $1 \e[0m"  #] | tee $PICASSO_LOG
 }
 export -f _warn
 
 
 # ----------
 function _error() {
- >&2 echo -e "\e[1;31mERROR: $1 \e[0m"  #]
+ >&2 echo -e "\e[1;31mERROR: $1 \e[0m"  #] | tee $PICASSO_LOG
 exit 1
 }
 export -f _error

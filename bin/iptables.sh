@@ -591,9 +591,9 @@ _debug_firewall sfshjlsdf
 
 [[ $DEBUG -gt 1 ]] && {
 # log what falls through
-/sbin/iptables -A INPUT -j LOG -m limit --limit 12/min --log-level 4 --log-prefix 'IPT INPUT ACCEPT: '
-/sbin/iptables -A FORWARD -j LOG -m limit --limit 12/min --log-level 4 --log-prefix 'IPT FORWARD ACCEPT: '
-/sbin/iptables -A OUTPUT -j LOG -m limit --limit 12/min --log-level 4 --log-prefix 'IPT OUTPUT ACCEPT: '
+sudo /sbin/iptables -A INPUT -j LOG -m limit --limit 12/min --log-level 4 --log-prefix 'IPT INPUT ACCEPT: '
+sudo /sbin/iptables -A FORWARD -j LOG -m limit --limit 12/min --log-level 4 --log-prefix 'IPT FORWARD ACCEPT: '
+sudo /sbin/iptables -A OUTPUT -j LOG -m limit --limit 12/min --log-level 4 --log-prefix 'IPT OUTPUT ACCEPT: '
 }
 
 }
@@ -618,9 +618,9 @@ _build_default_chain
 
 [[ $DEBUG -gt 1 ]] && {
 # log what falls through
-/sbin/iptables -A INPUT -j LOG -m limit --limit 12/min --log-level 4 --log-prefix 'IPT INPUT DROP: '
-/sbin/iptables -A FORWARD -j LOG -m limit --limit 12/min --log-level 4 --log-prefix 'IPT FORWARD DROP: '
-/sbin/iptables -A OUTPUT -j LOG -m limit --limit 12/min --log-level 4 --log-prefix 'IPT OUTPUT ACCEPT: '
+sudo /sbin/iptables -A INPUT -j LOG -m limit --limit 12/min --log-level 4 --log-prefix 'IPT INPUT DROP: '
+sudo /sbin/iptables -A FORWARD -j LOG -m limit --limit 12/min --log-level 4 --log-prefix 'IPT FORWARD DROP: '
+sudo /sbin/iptables -A OUTPUT -j LOG -m limit --limit 12/min --log-level 4 --log-prefix 'IPT OUTPUT ACCEPT: '
 }
 
 :<<\_s
@@ -674,9 +674,9 @@ _build_default_chain
 
 [[ $DEBUG -gt 1 ]] && {
 # log what falls through
-/sbin/iptables -A INPUT -j LOG -m limit --limit 12/min --log-level 4 --log-prefix 'IPT INPUT DROP: '
-/sbin/iptables -A FORWARD -j LOG -m limit --limit 12/min --log-level 4 --log-prefix 'IPT FORWARD DROP: '
-/sbin/iptables -A OUTPUT -j LOG -m limit --limit 12/min --log-level 4 --log-prefix 'IPT OUTPUT DROP: '
+sudo /sbin/iptables -A INPUT -j LOG -m limit --limit 12/min --log-level 4 --log-prefix 'IPT INPUT DROP: '
+sudo /sbin/iptables -A FORWARD -j LOG -m limit --limit 12/min --log-level 4 --log-prefix 'IPT FORWARD DROP: '
+sudo /sbin/iptables -A OUTPUT -j LOG -m limit --limit 12/min --log-level 4 --log-prefix 'IPT OUTPUT DROP: '
 }
 
 :<<\_s

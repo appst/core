@@ -206,7 +206,8 @@ else
 #!
 #"
 
-_debug2 "fqdn_dot: $fqdn_dot, DNS_KEY_PATH: $DNS_KEY_PATH"
+_debug "fqdn_dot: $fqdn_dot, DNS_KEY_PATH: $DNS_KEY_PATH"
+_debug "DNS_KEY: $DNS_KEY"
 
 if [[ -n "$DNS_KEY" ]]; then
 

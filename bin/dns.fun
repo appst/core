@@ -30,7 +30,7 @@ $1 - <hostname>[.subdomain][FED_PQDN.]
 $2 - ip
 _c
 
-DNS_KEY_PATH=${DNS_KEY_PATH:-$PWORK/$PID/.picasso/${FED_PQDN}.key}
+#DNS_KEY_PATH=${DNS_KEY_PATH:-$PWORK/$PID/.picasso/${FED_PQDN}.key}
 #[[ -f "$DNS_KEY_PATH" ]] || { _alert '-f $DNS_KEY_PATH'; return 1; }  # host only
 
 :<<\_x
@@ -76,6 +76,7 @@ _j
 function _dns_set() {
 [[ -z "$@" ]] && { echo "<FQDN> <IP>"; return 1; }
 
+DEBUG=2
 _debug2 "sdfs @ $@"
 
 :<<\_j
@@ -223,6 +224,8 @@ send
 else
 
 _debug rtywww
+
+local DNS_KEY_PATH=${DNS_KEY_PATH:-$PWORK/$PID/.picasso/${FED_PQDN}.key}
 
 cat <<! | nsupdate -k $DNS_KEY_PATH
 server $DNS_IP

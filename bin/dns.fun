@@ -211,6 +211,8 @@ _debug "DNS_KEY: $DNS_KEY"
 
 if [[ -n "$DNS_KEY" ]]; then
 
+_debug
+
 cat <<! | nsupdate -k <(echo $DNS_KEY)
 server $DNS_IP
 update delete $fqdn_dot A

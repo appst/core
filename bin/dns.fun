@@ -211,7 +211,7 @@ _debug "DNS_KEY: $DNS_KEY"
 
 if [[ -n "$DNS_KEY" ]]; then
 
-_debug
+_debug dgdgdfg
 
 cat <<! | nsupdate -k <(echo $DNS_KEY)
 server $DNS_IP
@@ -221,6 +221,8 @@ send
 !
 
 else
+
+_debug rtywww
 
 cat <<! | nsupdate -k $DNS_KEY_PATH
 server $DNS_IP

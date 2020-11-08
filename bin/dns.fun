@@ -77,7 +77,7 @@ function _dns_set() {
 [[ -z "$@" ]] && { echo "<FQDN> <IP>"; return 1; }
 
 DEBUG=2
-_debug2 "sdfs @ $@"
+_debug2 "sdfdfgdgfs @ $@"
 
 :<<\_j
 local pqdn=${1#*.}

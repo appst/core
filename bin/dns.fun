@@ -208,12 +208,25 @@ else
 
 _debug2 "fqdn_dot: $fqdn_dot, DNS_KEY_PATH: $DNS_KEY_PATH"
 
+if [[ -n "$DNS_KEY" ]]; then
+
+cat <<! | nsupdate -k <(echo $DNS_KEY)
+server $DNS_IP
+update delete $fqdn_dot A
+update add $fqdn_dot 3600 A $ip
+send
+!
+
+else
+
 cat <<! | nsupdate -k $DNS_KEY_PATH
 server $DNS_IP
 update delete $fqdn_dot A
 update add $fqdn_dot 3600 A $ip
 send
 !
+
+fi
 
 fi
 

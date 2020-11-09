@@ -24,7 +24,7 @@ _c
 
 # ----------
 :<<\_c
-_dns_set <name> <ip>  # <- $FED_PQDN, $DNS_KEY_PATH, $DNS_IP
+_dns_set <name> <ip>  # <- $FED_PQDN, $DNS_KEY_PATH, $NAMESERVER_MNIC
 
 $1 - <hostname>[.subdomain][FED_PQDN.]
 $2 - ip
@@ -125,7 +125,7 @@ _debug2 "FED_PQDN: $FED_PQDN, DNS_KEY_PATH: $DNS_KEY_PATH"
 
 :<<\_x
 . $PICASSO/core/bin/dns.fun
-DNS_IP=192.168.1.2
+NAMESERVER_MNIC=192.168.1.2
 FQDN=picasso.digital
 SUB=
 CONSUL_NODE_NAME=consul
@@ -167,7 +167,7 @@ _debug2 "fqdn_dot: $fqdn_dot"
 #local DNS_KEY_PATH=${DNS_KEY_PATH:-$PWORK/$PID/.picasso/${FED_PQDN}.key}
 local ip=$2
 
-_debug2 "DNS_KEY_PATH: $DNS_KEY_PATH, DNS_IP: $DNS_IP, ip: $ip"
+_debug2 "DNS_KEY_PATH: $DNS_KEY_PATH, NAMESERVER_MNIC: $NAMESERVER_MNIC, ip: $ip"
 
 #-d - debug mode
 #these two...
@@ -178,9 +178,9 @@ _debug2 "DNS_KEY_PATH: $DNS_KEY_PATH, DNS_IP: $DNS_IP, ip: $ip"
 #cat <<! | BASH_ENV= sudo nsupdate -v -k $key
 #cat <<! | nsupdate -v -k $key
 
-if [[ -z "$DNS_IP" ]]; then
+if [[ -z "$NAMESERVER_MNIC" ]]; then
 
-(( DEBUG > 0 )) && _warn "DNS_IP is not set"
+(( DEBUG > 0 )) && _warn "NAMESERVER_MNIC is not set"
 
 _debug2 "fqdn_dot: $fqdn_dot, key: $key"
 
@@ -193,14 +193,14 @@ send
 else
 
 #[[ -v _HENV_ ]] && _pdebug3 "cat <<! | nsupdate -k $DNS_KEY_PATH
-#server $DNS_IP
+#server $NAMESERVER_MNIC
 #update delete $fqdn_dot A
 #update add $fqdn_dot 3600 A $ip
 #send
 #!
 #"
 #[[ -v _GENV_ ]] && _debug3 "cat <<! | nsupdate -k $DNS_KEY_PATH
-#server $DNS_IP
+#server $NAMESERVER_MNIC
 #update delete $fqdn_dot A
 #update add $fqdn_dot 3600 A $ip
 #send
@@ -215,7 +215,7 @@ if [[ -n "$DNS_KEY" ]]; then
 _debug dgdgdfg
 
 cat <<! | nsupdate -k <(echo $DNS_KEY)
-server $DNS_IP
+server $NAMESERVER_MNIC
 update delete $fqdn_dot A
 update add $fqdn_dot 3600 A $ip
 send
@@ -228,7 +228,7 @@ _debug rtywww
 local DNS_KEY_PATH=${DNS_KEY_PATH:-$PWORK/$PID/.picasso/${FED_PQDN}.key}
 
 cat <<! | nsupdate -k $DNS_KEY_PATH
-server $DNS_IP
+server $NAMESERVER_MNIC
 update delete $fqdn_dot A
 update add $fqdn_dot 3600 A $ip
 send
@@ -309,9 +309,9 @@ ping test
 _x
 
 :<<\_x
-#DNS_IP=$(PDEBUG=0 . $PROOT/bin/host/network/resolve.sh DNS_MNIC_IP)
-DNS_IP=$(. $PROOT/bin/host/network/resolve.sh DNS_MNIC_IP)
-ip=$DNS_IP  # use DNS ip so we get a reply
+#NAMESERVER_MNIC=$(PDEBUG=0 . $PROOT/bin/host/network/resolve.sh NAMESERVER_MNIC)
+NAMESERVER_MNIC=$(. $PROOT/bin/host/network/resolve.sh NAMESERVER_MNIC)
+ip=$NAMESERVER_MNIC  # use DNS ip so we get a reply
 #key=/etc/bind/${FED_PQDN}.key
 key=$(convertpath -m $PHOME/_/${FED_PQDN}.key)
 fqdn=test.${FED_PQDN}
@@ -319,7 +319,7 @@ fqdn=test.${FED_PQDN}
 echo "fqdn: $fqdn, ip: $ip, FED_PQDN: $FED_PQDN, key: $key"
 
 cat <<! | nsupdate -v -k $key
-server $DNS_IP
+server $NAMESERVER_MNIC
 zone ${FED_PQDN}.
 update delete $fqdn_dot A
 update add $fqdn_dot 3600 A $ip
@@ -329,16 +329,16 @@ send
 ping -w 1000 -n 1 $fqdn
 _x
 :<<\__cygwin
-#DNS_IP=$(PDEBUG=0 . $PROOT/bin/host/network/resolve.sh DNS_MNIC_IP)
-DNS_IP=$(. $PROOT/bin/host/network/resolve.sh DNS_MNIC_IP)
+#NAMESERVER_MNIC=$(PDEBUG=0 . $PROOT/bin/host/network/resolve.sh NAMESERVER_MNIC)
+NAMESERVER_MNIC=$(. $PROOT/bin/host/network/resolve.sh NAMESERVER_MNIC)
 PNAME=test
-ip=$DNS_IP  # use DNS ip so we get a reply
+ip=$NAMESERVER_MNIC  # use DNS ip so we get a reply
 FED_PQDN=$FED_PQDN
 key=$(convertpath -m $PHOME/_/${FED_PQDN}.key)
 echo "PNAME: $PNAME, ip: $ip, FED_PQDN: $FED_PQDN, key: $key"
 
 cat <<! | nsupdate -v -k $key
-server $DNS_IP
+server $NAMESERVER_MNIC
 zone ${FED_PQDN}.
 update delete ${PNAME}.${FED_PQDN} A
 update add ${PNAME}.${FED_PQDN} 3600 A $ip
@@ -416,7 +416,7 @@ __s
 :<<\_j
 function _dns_get() {
 
-(( DEBUG > 0 )) && [[ -z "$DNS_IP" ]] && _warn "DNS_IP is not set"
+(( DEBUG > 0 )) && [[ -z "$NAMESERVER_MNIC" ]] && _warn "NAMESERVER_MNIC is not set"
 
 #_debug "@ $@"
 
@@ -441,13 +441,13 @@ fi
 
 _debug "fqdn_dot: $fqdn_dot"
 
-local r="$(nslookup $fqdn_dot $DNS_IP)"
+local r="$(nslookup $fqdn_dot $NAMESERVER_MNIC)"
 _s
 
 
 # ----------
 fqdn=$1
-local r="$(nslookup $fqdn $DNS_IP)"
+local r="$(nslookup $fqdn $NAMESERVER_MNIC)"
 
 [[ $? -eq 0 ]] || { _alert "DNS entry not found for $1"; return 1; }
 
@@ -464,12 +464,12 @@ _j
 function _dns_get() {
 [[ -z "$@" ]] && { echo "<FQDN>"; return 1; }
 
-(( DEBUG > 0 )) && [[ -z "$DNS_IP" ]] && _warn "DNS_IP is not set"
+(( DEBUG > 0 )) && [[ -z "$NAMESERVER_MNIC" ]] && _warn "NAMESERVER_MNIC is not set"
 
 #_debug "@ $@"
 
 fqdn=$1
-local r="$(nslookup $fqdn $DNS_IP)"
+local r="$(nslookup $fqdn $NAMESERVER_MNIC)"
 
 [[ $? -eq 0 ]] || { _alert "DNS entry not found for $1"; return 1; }
 

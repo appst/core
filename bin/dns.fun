@@ -12,11 +12,11 @@ _dns_set ${PHOST}.bit.cafe. 10.0.0.9
 FED_PQDN=bit.cafe _dns_set $PHOST 10.0.0.9
 FED_PQDN=picasso.digital _dns_get identity
 
-FED_PQDN=bit.cafe DNS_KEY_PATH=$PID_PICASSO/${FED_PQDN}.key _dns_set $PHOST 10.0.0.9
+FED_PQDN=bit.cafe MNIC_DNS_KEY_PATH=$PID_PICASSO/${FED_PQDN}.key _dns_set $PHOST 10.0.0.9
 
 _dns_set $PNAME $ip
-FED_PQDN=bit.cafe DNS_KEY_PATH=$PID_PICASSO/${FED_PQDN}.key _dns_set $PNAME $ip
-FED_PQDN=bit.cafe DNS_KEY_PATH=$PID_PICASSO/${FED_PQDN}.key _dns_set test 192.168.1.254
+FED_PQDN=bit.cafe MNIC_DNS_KEY_PATH=$PID_PICASSO/${FED_PQDN}.key _dns_set $PNAME $ip
+FED_PQDN=bit.cafe MNIC_DNS_KEY_PATH=$PID_PICASSO/${FED_PQDN}.key _dns_set test 192.168.1.254
 
 _dns_get ${PHOST}.${FED_PQDN}
 _c
@@ -24,14 +24,14 @@ _c
 
 # ----------
 :<<\_c
-_dns_set <name> <ip>  # <- $FED_PQDN, $DNS_KEY_PATH, $NAMESERVER_MNIC
+_dns_set <name> <ip>  # <- $FED_PQDN, $MNIC_DNS_KEY_PATH, $MNIC_NAMESERVER
 
 $1 - <hostname>[.subdomain][FED_PQDN.]
 $2 - ip
 _c
 
-#DNS_KEY_PATH=${DNS_KEY_PATH:-$PWORK/$PID/.picasso/${FED_PQDN}.key}
-#[[ -f "$DNS_KEY_PATH" ]] || { _alert '-f $DNS_KEY_PATH'; return 1; }  # host only
+#MNIC_DNS_KEY_PATH=${MNIC_DNS_KEY_PATH:-$PWORK/$PID/.picasso/${FED_PQDN}.key}
+#[[ -f "$MNIC_DNS_KEY_PATH" ]] || { _alert '-f $MNIC_DNS_KEY_PATH'; return 1; }  # host only
 
 :<<\_x
 fqdn=$(echo $1 | grep -P "^[a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-zA-Z0-9](?:\.[a-zA-Z]{2,})+$")
@@ -53,7 +53,7 @@ FED_PQDN=picasso.digital _dns_set $HOSTNAME 10.0.0.9
 FED_PQDN=picasso.digital
 FQDN=${HOSTNAME}.${FED_PQDN}
 ip=10.0.0.9
-key=${4:-${DNS_KEY_PATH:-$DOMAIN_DNS_KEY_PATH}}
+key=${4:-${MNIC_DNS_KEY_PATH:-$DOMAIN_DNS_KEY_PATH}}
 cat <<! | nsupdate -k $key
 server dns
 zone ${FED_PQDN}.
@@ -66,7 +66,7 @@ _x
 
 :<<\_j
 local FED_PQDN=${FED_PQDN:-$GENESIS_PQDN}
-local DNS_KEY_PATH=${DNS_KEY_PATH:-$PWORK/$PID/.picasso/${FED_PQDN}.key}
+local MNIC_DNS_KEY_PATH=${MNIC_DNS_KEY_PATH:-$PWORK/$PID/.picasso/${FED_PQDN}.key}
 local fqdn=$1.${FED_PQDN}
 local ip=$2
 
@@ -121,19 +121,19 @@ else
 _s
 
 # www
-_debug2 "FED_PQDN: $FED_PQDN, DNS_KEY_PATH: $DNS_KEY_PATH"
+_debug2 "FED_PQDN: $FED_PQDN, MNIC_DNS_KEY_PATH: $MNIC_DNS_KEY_PATH"
 
 :<<\_x
 . $PICASSO/core/bin/dns.fun
-NAMESERVER_MNIC=192.168.1.2
+MNIC_NAMESERVER=192.168.1.2
 FQDN=picasso.digital
 SUB=
 CONSUL_NODE_NAME=consul
 CONSUL_DATACENTER=dc1
-DNS_KEY_PATH=/etc/bind/$FQDN.key \
+MNIC_DNS_KEY_PATH=/etc/bind/$FQDN.key \
 _dns_set ${CONSUL_NODE_NAME}.${CONSUL_DATACENTER}${SUB} 1.2.3.4
 
-DNS_KEY_PATH=/etc/bind/$FQDN.key \
+MNIC_DNS_KEY_PATH=/etc/bind/$FQDN.key \
 _dns_get ${CONSUL_NODE_NAME}.${CONSUL_DATACENTER}${SUB}
 _x
 
@@ -164,10 +164,10 @@ _s
 
 _debug2 "fqdn_dot: $fqdn_dot"
 
-#local DNS_KEY_PATH=${DNS_KEY_PATH:-$PWORK/$PID/.picasso/${FED_PQDN}.key}
+#local MNIC_DNS_KEY_PATH=${MNIC_DNS_KEY_PATH:-$PWORK/$PID/.picasso/${FED_PQDN}.key}
 local ip=$2
 
-_debug2 "DNS_KEY_PATH: $DNS_KEY_PATH, NAMESERVER_MNIC: $NAMESERVER_MNIC, ip: $ip"
+_debug2 "MNIC_DNS_KEY_PATH: $MNIC_DNS_KEY_PATH, MNIC_NAMESERVER: $MNIC_NAMESERVER, ip: $ip"
 
 #-d - debug mode
 #these two...
@@ -178,9 +178,9 @@ _debug2 "DNS_KEY_PATH: $DNS_KEY_PATH, NAMESERVER_MNIC: $NAMESERVER_MNIC, ip: $ip
 #cat <<! | BASH_ENV= sudo nsupdate -v -k $key
 #cat <<! | nsupdate -v -k $key
 
-if [[ -z "$NAMESERVER_MNIC" ]]; then
+if [[ -z "$MNIC_NAMESERVER" ]]; then
 
-(( DEBUG > 0 )) && _warn "NAMESERVER_MNIC is not set"
+(( DEBUG > 0 )) && _warn "MNIC_NAMESERVER is not set"
 
 _debug2 "fqdn_dot: $fqdn_dot, key: $key"
 
@@ -192,30 +192,30 @@ send
 
 else
 
-#[[ -v _HENV_ ]] && _pdebug3 "cat <<! | nsupdate -k $DNS_KEY_PATH
-#server $NAMESERVER_MNIC
+#[[ -v _HENV_ ]] && _pdebug3 "cat <<! | nsupdate -k $MNIC_DNS_KEY_PATH
+#server $MNIC_NAMESERVER
 #update delete $fqdn_dot A
 #update add $fqdn_dot 3600 A $ip
 #send
 #!
 #"
-#[[ -v _GENV_ ]] && _debug3 "cat <<! | nsupdate -k $DNS_KEY_PATH
-#server $NAMESERVER_MNIC
+#[[ -v _GENV_ ]] && _debug3 "cat <<! | nsupdate -k $MNIC_DNS_KEY_PATH
+#server $MNIC_NAMESERVER
 #update delete $fqdn_dot A
 #update add $fqdn_dot 3600 A $ip
 #send
 #!
 #"
 
-_debug "fqdn_dot: $fqdn_dot, DNS_KEY_PATH: $DNS_KEY_PATH"
-_debug "DNS_KEY: $DNS_KEY"
+_debug "fqdn_dot: $fqdn_dot, MNIC_DNS_KEY_PATH: $MNIC_DNS_KEY_PATH"
+_debug "MNIC_DNS_KEY: $MNIC_DNS_KEY"
 
-if [[ -n "$DNS_KEY" ]]; then
+if [[ -n "$MNIC_DNS_KEY" ]]; then
 
 _debug dgdgdfg
 
-cat <<! | nsupdate -k <(echo $DNS_KEY)
-server $NAMESERVER_MNIC
+cat <<! | nsupdate -k <(echo $MNIC_DNS_KEY)
+server $MNIC_NAMESERVER
 update delete $fqdn_dot A
 update add $fqdn_dot 3600 A $ip
 send
@@ -225,10 +225,10 @@ else
 
 _debug rtywww
 
-local DNS_KEY_PATH=${DNS_KEY_PATH:-$PWORK/$PID/.picasso/${FED_PQDN}.key}
+local MNIC_DNS_KEY_PATH=${MNIC_DNS_KEY_PATH:-$PWORK/$PID/.picasso/${FED_PQDN}.key}
 
-cat <<! | nsupdate -k $DNS_KEY_PATH
-server $NAMESERVER_MNIC
+cat <<! | nsupdate -k $MNIC_DNS_KEY_PATH
+server $MNIC_NAMESERVER
 update delete $fqdn_dot A
 update add $fqdn_dot 3600 A $ip
 send
@@ -309,9 +309,9 @@ ping test
 _x
 
 :<<\_x
-#NAMESERVER_MNIC=$(PDEBUG=0 . $PROOT/bin/host/network/resolve.sh NAMESERVER_MNIC)
-NAMESERVER_MNIC=$(. $PROOT/bin/host/network/resolve.sh NAMESERVER_MNIC)
-ip=$NAMESERVER_MNIC  # use DNS ip so we get a reply
+#MNIC_NAMESERVER=$(PDEBUG=0 . $PROOT/bin/host/network/resolve.sh MNIC_NAMESERVER)
+MNIC_NAMESERVER=$(. $PROOT/bin/host/network/resolve.sh MNIC_NAMESERVER)
+ip=$MNIC_NAMESERVER  # use DNS ip so we get a reply
 #key=/etc/bind/${FED_PQDN}.key
 key=$(convertpath -m $PHOME/_/${FED_PQDN}.key)
 fqdn=test.${FED_PQDN}
@@ -319,7 +319,7 @@ fqdn=test.${FED_PQDN}
 echo "fqdn: $fqdn, ip: $ip, FED_PQDN: $FED_PQDN, key: $key"
 
 cat <<! | nsupdate -v -k $key
-server $NAMESERVER_MNIC
+server $MNIC_NAMESERVER
 zone ${FED_PQDN}.
 update delete $fqdn_dot A
 update add $fqdn_dot 3600 A $ip
@@ -329,16 +329,16 @@ send
 ping -w 1000 -n 1 $fqdn
 _x
 :<<\__cygwin
-#NAMESERVER_MNIC=$(PDEBUG=0 . $PROOT/bin/host/network/resolve.sh NAMESERVER_MNIC)
-NAMESERVER_MNIC=$(. $PROOT/bin/host/network/resolve.sh NAMESERVER_MNIC)
+#MNIC_NAMESERVER=$(PDEBUG=0 . $PROOT/bin/host/network/resolve.sh MNIC_NAMESERVER)
+MNIC_NAMESERVER=$(. $PROOT/bin/host/network/resolve.sh MNIC_NAMESERVER)
 PNAME=test
-ip=$NAMESERVER_MNIC  # use DNS ip so we get a reply
+ip=$MNIC_NAMESERVER  # use DNS ip so we get a reply
 FED_PQDN=$FED_PQDN
 key=$(convertpath -m $PHOME/_/${FED_PQDN}.key)
 echo "PNAME: $PNAME, ip: $ip, FED_PQDN: $FED_PQDN, key: $key"
 
 cat <<! | nsupdate -v -k $key
-server $NAMESERVER_MNIC
+server $MNIC_NAMESERVER
 zone ${FED_PQDN}.
 update delete ${PNAME}.${FED_PQDN} A
 update add ${PNAME}.${FED_PQDN} 3600 A $ip
@@ -397,7 +397,7 @@ ip=${ip:-192.168.1.254}
 pqdn=${3:-$FED_PQDN}
 _debug "PNAME: $PNAME, ip: $ip, pqdn: $pqdn"
 
-pqdn=$FED_PQDN DNS_KEY_PATH=$PHOME/service/dns/${pqdn}.key _dns_set $PNAME $ip
+pqdn=$FED_PQDN MNIC_DNS_KEY_PATH=$PHOME/service/dns/${pqdn}.key _dns_set $PNAME $ip
 
 nslookup -q=A $PNAME $dns || return 1  # $dns may or may not be set from $PROOT/bin/host/network/resolve.sh
 [[ -n "$pqdn" ]] && { nslookup $PNAME.${pqdn} $dns || return 1; }  # $dns may or may not be set from $PROOT/bin/host/network/resolve.sh
@@ -416,7 +416,7 @@ __s
 :<<\_j
 function _dns_get() {
 
-(( DEBUG > 0 )) && [[ -z "$NAMESERVER_MNIC" ]] && _warn "NAMESERVER_MNIC is not set"
+(( DEBUG > 0 )) && [[ -z "$MNIC_NAMESERVER" ]] && _warn "MNIC_NAMESERVER is not set"
 
 #_debug "@ $@"
 
@@ -441,13 +441,13 @@ fi
 
 _debug "fqdn_dot: $fqdn_dot"
 
-local r="$(nslookup $fqdn_dot $NAMESERVER_MNIC)"
+local r="$(nslookup $fqdn_dot $MNIC_NAMESERVER)"
 _s
 
 
 # ----------
 fqdn=$1
-local r="$(nslookup $fqdn $NAMESERVER_MNIC)"
+local r="$(nslookup $fqdn $MNIC_NAMESERVER)"
 
 [[ $? -eq 0 ]] || { _alert "DNS entry not found for $1"; return 1; }
 
@@ -464,12 +464,12 @@ _j
 function _dns_get() {
 [[ -z "$@" ]] && { echo "<FQDN>"; return 1; }
 
-(( DEBUG > 0 )) && [[ -z "$NAMESERVER_MNIC" ]] && _warn "NAMESERVER_MNIC is not set"
+(( DEBUG > 0 )) && [[ -z "$MNIC_NAMESERVER" ]] && _warn "MNIC_NAMESERVER is not set"
 
 #_debug "@ $@"
 
 fqdn=$1
-local r="$(nslookup $fqdn $NAMESERVER_MNIC)"
+local r="$(nslookup $fqdn $MNIC_NAMESERVER)"
 
 [[ $? -eq 0 ]] || { _alert "DNS entry not found for $1"; return 1; }
 

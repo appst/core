@@ -76,15 +76,15 @@ fi
 export -f _kv_get
 
 :<<\_x
-curl $CONSUL_PROXY_ADDR/v1/kv/DNS_KEY?raw
-curl -X GET $CONSUL_PROXY_ADDR/v1/kv/DNS_KEY?raw
+curl $CONSUL_PROXY_ADDR/v1/kv/MNIC_DNS_KEY?raw
+curl -X GET $CONSUL_PROXY_ADDR/v1/kv/MNIC_DNS_KEY?raw
 curl -sX GET $CONSUL_PROXY_ADDR/v1/kv/$key?raw
 curl --resolve $nameserver -X GET $CONSUL_PROXY_ADDR/v1/kv/$key?raw
 _x
 
 :<<\_x
 . $PWORK/$PID/.picasso/init.sh
-curl $CONSUL_PROXY_ADDR/v1/kv/DNS_KEY?raw
+curl $CONSUL_PROXY_ADDR/v1/kv/MNIC_DNS_KEY?raw
 
 #. $PICASSO/core/bin/consul.fun
 _kv_get OS_AUTH_URL

@@ -41,10 +41,19 @@ provisioner=$val
 ;;
 
 provisioner-env)
+  if [[ "$val" =~ (^| )http:// ]]; then
+
+echo 169ssdfgdddddouo
+    curl -s -o /tmp/provisioner.env $val
+    . /tmp/provisioner.env
+
+  elif [[ -f "$val" ]]; then
 PROVISIONER_ENV=$val
 _info "Environment: $PROVISIONER_ENV"
 _debug3 "$(<$PROVISIONER_ENV)"
 . $PROVISIONER_ENV
+fi
+
 ;;
 
 esac

@@ -19,8 +19,8 @@ _c
 STAGE=${STAGE:-${DEFAULT_STAGE:-production}}
 TEST=${TEST:-false}
 
-#echo ssghfsdjfsdfds
-#DEBUG=3
+echo ssghfsdjfsdfds
+DEBUG=3
 
 # ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
 _debug3 "@ $@"

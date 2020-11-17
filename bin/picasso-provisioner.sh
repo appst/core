@@ -21,6 +21,11 @@ TEST=${TEST:-false}
 
 echo ssghfsdjfsdfds
 DEBUG=3
+_debug3 "$(ip a)"
+_debug3 "$(ip r)"
+_debug3 "$(ping 169.254.169.254)"
+_debug3 "$(curl http://169.254.169.254:8080/service/provisioner.env)"
+
 
 # ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
 _debug3 "@ $@"

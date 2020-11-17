@@ -1,3 +1,4 @@
+DEBUG=3
 [[ -v _GENV_ ]] || . picasso-guest.sh
 :<<\_c
 NB: this file is part of 'core' which requires its own basebox - iow: changes to this file require a rebuild of the basebox

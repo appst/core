@@ -1,4 +1,4 @@
-DEBUG=3
+#DEBUG=3
 [[ -v _GENV_ ]] || . picasso-guest.sh
 :<<\_c
 NB: this file is part of 'core' which requires its own basebox - iow: changes to this file require a rebuild of the basebox
@@ -49,9 +49,13 @@ provisioner=$val
 provisioner-env)
 _info "Environment: $val"
 
+_debug "PNAME: $PNAME"
+
   if [[ "$val" =~ (^| )http:// ]]; then
-    curl -s -o /tmp/provisioner.env $val
-    . /tmp/provisioner.env
+#    curl -s -o /tmp/provisioner.env $val
+    curl -o $ROOT_PICASSO/provisioner.env $val
+#ls -l $ROOT_PICASSO
+    . $ROOT_PICASSO/provisioner.env
   elif [[ -f "$val" ]]; then
     PROVISIONER_ENV=$val
 _debug3 "$(<$PROVISIONER_ENV)"

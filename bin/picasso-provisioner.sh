@@ -22,9 +22,9 @@ TEST=${TEST:-false}
 
 #echo ssghfsdjfsdfds
 #DEBUG=3
-echo "$(ip a)"
-echo "$(ip r)"
-echo "$(ping -c1 169.254.169.254)"
+#echo "$(ip a)"
+#echo "$(ip r)"
+#echo "$(ping -c1 169.254.169.254)"
 #_debug3 "$(curl -s http://169.254.169.254:8080/service/provisioner.env)"
 
 

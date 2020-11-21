@@ -124,16 +124,9 @@ provisioners write configuration to $ROOT_PICASSO/init.d/
 provisioners should not write to $PICASSO/core/init.d/ - they are distro files
 _c
 
-. $PICASSO/core/bin/picasso-init.sh $PICASSO/core/init.d/
+. $PICASSO/core/bin/picasso-init.sh $PICASSO/core/init.d/  # TODO: deprecate - why two sources + move fix prov-sys
 
-#. $PICASSO/core/bin/picasso-init.sh $PICASSO/core/guest/init.d/  # TODO: deprecate - why two sources + move fix prov-sys
-#if [[ -v PWORK ]]; then
-#echo 111
-#. $PICASSO/core/bin/picasso-init.sh $PID_PICASSO/init.d/
-#else
-#echo 222222
 . $PICASSO/core/bin/picasso-init.sh $ROOT_PICASSO/init.d/
-#fi
 
 :<<\_s
 for script in $(/usr/bin/find $PICASSO/core/guest/network.d/ -maxdepth 1 -name '*.env' \( -type l -o -type f \) | /usr/bin/sort); do

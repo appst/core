@@ -22,9 +22,9 @@ TEST=${TEST:-false}
 
 #echo ssghfsdjfsdfds
 #DEBUG=3
-#_debug3 "$(ip a)"
-#_debug3 "$(ip r)"
-#_debug3 "$(ping -c 1 169.254.169.254)"
+echo "$(ip a)"
+echo "$(ip r)"
+echo "$(ping -c1 169.254.169.254)"
 #_debug3 "$(curl -s http://169.254.169.254:8080/service/provisioner.env)"
 
 
@@ -49,12 +49,8 @@ provisioner=$val
 provisioner-env)
 _info "Environment: $val"
 
-_debug "PNAME: $PNAME"
-
   if [[ "$val" =~ (^| )http:// ]]; then
-#    curl -s -o /tmp/provisioner.env $val
-    curl -o $ROOT_PICASSO/provisioner.env $val
-#ls -l $ROOT_PICASSO
+    curl -s -o $ROOT_PICASSO/provisioner.env $val
     . $ROOT_PICASSO/provisioner.env
   elif [[ -f "$val" ]]; then
     PROVISIONER_ENV=$val

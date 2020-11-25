@@ -31,8 +31,12 @@ TEST=${TEST:-false}
 # ----------
 _debug "PROVISIONER_ENV: $PROVISIONER_ENV"
 
+:<<\_c
+$ROOT_PICASSO/init.d/00-provider.env is already loaded and it may define $PROVISIONER_ENV
+_c
+
 [[ -n "$PROVISIONER_ENV" ]] && {
-  curl -s -o $ROOT_PICASSO/provisioner.env http://169.254.169.254:8080/$HOSTNAME/$PROVISIONER_ENV
+  curl -s -o $ROOT_PICASSO/provisioner.env $PICASSO_METADATA_URL/$PROVISIONER_ENV
   . $ROOT_PICASSO/provisioner.env
 }
 

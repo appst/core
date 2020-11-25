@@ -28,6 +28,17 @@ TEST=${TEST:-false}
 #_debug3 "$(curl -s http://169.254.169.254:8080/service/provisioner.env)"
 
 
+# ----------
+_debug "PROVISIONER_ENV: $PROVISIONER_ENV"
+
+#[[ -v PROVISIONER_ENV ]] && {
+[[ -n "$PROVISIONER_ENV" ]] && {
+  curl -s -o $ROOT_PICASSO/provisioner.env http://169.254.169.254:8080/$HOSTNAME/$PROVISIONER_ENV
+  . $ROOT_PICASSO/provisioner.env
+}
+#}
+
+
 # ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
 _debug3 "@ $@"
 
@@ -70,15 +81,6 @@ _debug3
 
 set --  # clear script arguments to prevent re-entry and parameter propagation to sourced sub-scripts
 
-}
-
-
-# ----------
-[[ -v PROVISIONER_ENV ]] && {
-[[ -z "$PROVISIONER_ENV" ]] && {
-  curl -s -o $ROOT_PICASSO/provisioner.env http://169.254.169.254:8080/$HOSTNAME/provisioner.env
-  . $ROOT_PICASSO/provisioner.env
-}
 }
 
 

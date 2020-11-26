@@ -35,15 +35,29 @@ _debug "PROVISIONER_ENV: $PROVISIONER_ENV, PICASSO_METADATA_URL: $PICASSO_METADA
 $ROOT_PICASSO/init.d/00-provider.env is already loaded and it may define $PROVISIONER_ENV
 _c
 
-if [[ -f $ROOT_PICASSO/provisioner.env ]]; then
-  . $ROOT_PICASSO/provisioner.env
-else
 [[ -n "$PROVISIONER_ENV" ]] && {
-  curl -s -o $ROOT_PICASSO/provisioner.env $PICASSO_METADATA_URL/$PROVISIONER_ENV
-  . $ROOT_PICASSO/provisioner.env
-}
-fi
 
+[[ -f $ROOT_PICASSO/provisioner.env ]] || {
+
+case "$METADATA_SOURCE" in
+
+virtualbox)
+_info "Loading metadata from /vagrant/.picasso/$PROVISIONER_ENV"
+cp /vagrant/.picasso/$PROVISIONER_ENV $ROOT_PICASSO/provisioner.env
+;;
+
+cloudinit|*)
+_info "Loading metadata from $PICASSO_METADATA_URL/$PROVISIONER_ENV"
+curl -s -o $ROOT_PICASSO/provisioner.env $PICASSO_METADATA_URL/$PROVISIONER_ENV
+;;
+
+esac
+
+}
+
+. $ROOT_PICASSO/provisioner.env
+
+}
 
 
 # ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
@@ -68,6 +82,7 @@ provisioner-env)
 _info "Environment: $val"
 
 PROVISIONER_ENV=$val
+_info "Loading metadata from $PROVISIONER_ENV"
 
   if [[ "$val" =~ (^| )http:// ]]; then
     curl -s -o $ROOT_PICASSO/provisioner.env $val

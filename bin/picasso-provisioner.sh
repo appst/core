@@ -42,8 +42,8 @@ _c
 case "$METADATA_SOURCE" in
 
 virtualbox)
-_info "Loading metadata from /vagrant/.picasso/$PROVISIONER_ENV"
-cp /vagrant/.picasso/$PROVISIONER_ENV $ROOT_PICASSO/provisioner.env
+_info "Loading metadata from /vagrant/$PROVISIONER_ENV"
+cp /vagrant/$PROVISIONER_ENV $ROOT_PICASSO/provisioner.env
 ;;
 
 cloudinit|*)

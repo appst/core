@@ -21,7 +21,7 @@ STAGE=${STAGE:-${DEFAULT_STAGE:-production}}
 TEST=${TEST:-false}
 
 #echo ssghfsdjfsdfds
-#DEBUG=3
+DEBUG=3
 #echo "$(ip a)"
 #echo "$(ip r)"
 #echo "$(ping -c1 169.254.169.254)"
@@ -29,16 +29,21 @@ TEST=${TEST:-false}
 
 
 # ----------
-_debug "PROVISIONER_ENV: $PROVISIONER_ENV"
+_debug "PROVISIONER_ENV: $PROVISIONER_ENV, PICASSO_METADATA_URL: $PICASSO_METADATA_URL"
 
 :<<\_c
 $ROOT_PICASSO/init.d/00-provider.env is already loaded and it may define $PROVISIONER_ENV
 _c
 
+if [[ -f $ROOT_PICASSO/provisioner.env ]]; then
+  . $ROOT_PICASSO/provisioner.env
+else
 [[ -n "$PROVISIONER_ENV" ]] && {
   curl -s -o $ROOT_PICASSO/provisioner.env $PICASSO_METADATA_URL/$PROVISIONER_ENV
   . $ROOT_PICASSO/provisioner.env
 }
+fi
+
 
 
 # ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------

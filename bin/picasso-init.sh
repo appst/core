@@ -42,6 +42,7 @@ _c
 
 # _debug does not exist yet
 
+echo lsdkfhjlkfjdljjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj
 
 # *.fun
 for script in $(/usr/bin/find $1 -maxdepth 1 -name '*.fun' \( -type l -o -type f \) | /usr/bin/sort); do
@@ -52,7 +53,6 @@ for script in $(/usr/bin/find $1 -maxdepth 1 -name '*.fun' \( -type l -o -type f
 done
 
 
-# ----------
 # *.env
 for script in $(/usr/bin/find $1 -maxdepth 1 -name '*.env' \( -type l -o -type f \) | /usr/bin/sort); do
 (( PDEBUG < 3 )) || echo ">>> script: $script"
@@ -61,41 +61,8 @@ for script in $(/usr/bin/find $1 -maxdepth 1 -name '*.env' \( -type l -o -type f
 (( PDEBUG < 3 )) || echo "<<<: $script done"
 done
 
-:<<\_x
-for script in $(/usr/bin/find $PICASSO/core/guest/init.d/ -maxdepth 1 -name '*.env' \( -type l -o -type f \) | /usr/bin/sort); do
-(( PDEBUG < 3 )) || echo ">>> script: $script"
-#sleep 1
-. $script || { echo ". $script"; sleep 10; exit 1; }
-(( PDEBUG < 3 )) || echo "<<<: $script done"
-#sleep 1
-done
-for script in $(/usr/bin/find $PICASSO/core/guest/init.d/ -maxdepth 1 -name '*.fun' \( -type l -o -type f \) | /usr/bin/sort); do
-(( PDEBUG < 3 )) || echo ">>> script: $script"
-#sleep 5
-. $script || { echo ". $script"; sleep 10; exit 1; }
-(( PDEBUG < 3 )) || echo "<<<: $script done"
-#sleep 2
-done
-
-for script in $(/usr/bin/find $PICASSO/core/guest/init.d/ -maxdepth 1 -name '[0-9]*.sh' \( -type l -o -type f \) | /usr/bin/sort); do
-#_pdebug "loading: $script"
-#sleep 1
-. $script || { echo ". $script"; sleep 10; exit 1; }
-#_pdebug "loading: $script done"
-#sleep 1
-done
-
-# non-numeric *.sh
-for script in $(/usr/bin/find $PICASSO/core/guest/init.d/ -maxdepth 1 -name '[^0-9]*.sh' \( -type l -o -type f \) | /usr/bin/sort); do
-#_pdebug "loading: $script"
-#sleep 1
-. $script || { echo ". $script"; sleep 10; exit 1; }
-#_pdebug "loading: $script done"
-#sleep 1
-done
-_x
-
 # _debug now exists
+
 
 # numeric *.sh
 for script in $(/usr/bin/find $1 -maxdepth 1 -name '[0-9]*.sh' \( -type l -o -type f \) | /usr/bin/sort); do
@@ -103,6 +70,7 @@ for script in $(/usr/bin/find $1 -maxdepth 1 -name '[0-9]*.sh' \( -type l -o -ty
 . $script || { echo ". $script"; sleep 10; exit 1; }
 #_pdebug "loading: $script done"
 done
+
 
 # non-numeric *.sh
 for script in $(/usr/bin/find $1 -maxdepth 1 -name '[^0-9]*.sh' \( -type l -o -type f \) | /usr/bin/sort); do

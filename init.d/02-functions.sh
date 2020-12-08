@@ -98,6 +98,23 @@ export -f _is_installed
 esac
 
 
+# ----------
+:<<\_c
+$1 - ip
+$2 - port
+_c
+
+function _is_port_active() {
+nc -4 -z -w 1 $1 $2
+# return $?
+}
+export -f _is_port_active
+
+:<<\_x
+_is_port_active 192.168.1.5 3306
+_x
+
+
 # ---------- ---------- ---------- ---------- ----------
 (( PDEBUG < 3 )) || echo -e "\e[2;30;43m<<< ${BASH_SOURCE[0]}\e[0m"  #]
 

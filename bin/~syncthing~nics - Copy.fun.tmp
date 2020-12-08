@@ -53,7 +53,7 @@ done
 }
 
 declare -a cnics1; z_PNICS_2array cnic cnics1
-_PNICS_2setenv cnics
+_PNICS_2setenv cnics cnic
 _s
 
 function _PNICS_2array2() {
@@ -94,11 +94,11 @@ done
 
 
 # ----------
-function _PNICS_2env() {  # <record name> <variable prefix>
-local rec=$1
-local prefix=$2
+function _PNICS_2env() {  # <environment variable prefix> <array name>
+local prefix=$1
+local arr=$2
 
-local IPx=$rec[0]  # IPx=cnics1[0]
+local IPx=$arr[0]  # IPx=cnics1[0]
 
 #_debug "_PNICS_2env $@"
 
@@ -114,18 +114,17 @@ local ip=${IPx#*-}  # retain the part after the first hyphen (MNIC_IP/controller
 export ${prefix}_ip=$ip
 #_debug "export ${prefix}_ip=$ip"
 
-local mnemonic=$rec[1]  # mnenmonic=cnics1[1]
+local mnemonic=$arr[1]  # mnenmonic=cnics1[1]
 export ${prefix}_mnemonic=${!mnemonic}  # cnics_menmonic=MNIC
 #_debug "export ${prefix}_mnemonic=${!mnemonic}"
 
-local type=$rec[2]  # type=cnics1[2]
+local type=$arr[2]  # type=cnics1[2]
 export ${prefix}_type=${!type}  # cnics_menmonic=MNIC
 #_debug "export ${prefix}_type=${!type}"
 
-local option1=$rec[3]  # option1=cnics1[3]
+local option1=$arr[3]  # option1=cnics1[3]
 export ${prefix}_option1=${!option1}  # cnics_option1=intnet-tunnel
 #_debug "export ${prefix}_option1=${!option1}"
-
 }
 
 
@@ -147,7 +146,7 @@ _x
 
 # ----------
 :<<\__c
-_PNICS_2setenv cnics
+_PNICS_2setenv cnics cnic
 
 marshal array into environment values for pconfig...
 export ip1
@@ -161,11 +160,10 @@ export mode1
 export cidr1
 __c
 
-function _PNICS_2setenv() {  # <array>
-local arr=$1
-local ptr_length=${arr}_length
+function _PNICS_2setenv() {  # <array prefix> <variable prefix>
+local ptr_length=${1}_length
 
-_debug2 "_PNICS_2setenv @: $@"  # cnics
+_debug2 "_PNICS_2setenv @: $@"  # cnics cnic
 
 [[ -z "${!ptr_length}" ]] && {
 _alert "empty $1"
@@ -193,25 +191,20 @@ for ((i=1;i<=${!ptr_length};i++)); do
 
 _debug2 "_PNICS_2env $2 $1$i"
 
-_PNICS_2env ${arr}${i} tmp  # record -> env:tmp_{?}
-:<<\_x
-echo ${cnics[@]}
-_PNICS_2env cnics1 tmp
-env | grep tmp_
-_x
+_PNICS_2env $2 ${1}${i}  # -> env:cnic_{?}
 
-_debug3 "$(env | grep ${arr}_)"
+_debug3 "$(env | grep ${2}_)"
 
 _debug2 "$n) cnic_IP: $cnic_IP, cnic_ip: $cnic_ip, cnic_mnemonic: $cnic_mnemonic, cnic_type: $cnic_type, cnic_option1: $cnic_option1"
 
 # IP1 - extract the last character that is the interface offset
-#local IP=${arr}_IP  # IP=cnic_IP
+#local IP=${2}_IP  # IP=cnic_IP
 #n=${!IP:-1}  # n=nic1
 #nic=${!IP:-1}  # n=nic1
 
 #_debug2 "IP: $IP, nic: $nic"
 
-local mnemonic=tmp_mnemonic  # mnemonic=cnic_mnemonic
+local mnemonic=${2}_mnemonic  # mnemonic=cnic_mnemonic
 mnemonic=${!mnemonic}  # mnemonic=MNIC
 #export $mnemonic=nic${n}  # MNIC=nic1
 
@@ -241,7 +234,8 @@ export gateway${i}=${!_GATEWAY}
 export mode${i}=${!_MODE}
 export cidr${i}=${!_NETWORK}/${!_PREFIX}
 
-local ip=tmp_ip
+local ip=${2}_ip
+#export ip${n}=${!ip:-${!_C}.254}  # ip1=x.x.x.x
 export ip${i}=${!ip:-${!_C}.254}  # ip1=x.x.x.x
 
 _debug2 "export ip${i}=${!ip:-${!_C}.254}"
@@ -251,7 +245,7 @@ _debug2 "gkdgh ip: $ip, ip${i}: ${!test}"
 #test2=IP${i}
 #_debug2 "gkdgh ip: $ip, ip${i}: ${!test}, IP: $IP, IP${i}: ${!test2}"
 
-#_debug "glsoeutgso ${arr}_ip: ${!ip}, _C: $_C"
+#_debug "glsoeutgso ${2}_ip: ${!ip}, _C: $_C"
 #_debug "glsoeutgso export ip${n}=${!ip:-${!_C}.254}"
 
 #cat >> $PROVIDER_ENV <<!

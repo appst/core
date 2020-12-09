@@ -25,9 +25,9 @@ echo "$_cnics[$j]: ${!k}"
 done
 done
 
-_PNICS_2env cnic_1 cnics1
+_PNICS_2env cnics${i} cnic
 
-env | grep cnic_1
+env | grep cnic_
 
 _PNICS_dump cnics
 _x
@@ -215,9 +215,9 @@ local mnemonic=tmp_mnemonic  # mnemonic=cnic_mnemonic
 mnemonic=${!mnemonic}  # mnemonic=MNIC
 #export $mnemonic=nic${n}  # MNIC=nic1
 
-test=${mnemonic}_
+#test=${mnemonic}_
 
-_debug "wwrouo test: $test, \$test: ${!test}"
+#_debug "wwrouo test: $test, \$test: ${!test}"
 
 _C=${mnemonic}_C  # from env.sh(cookbook)
 [[ -z "${!_C}" ]] && _alert "-z \${mnemonic}_C"  # insure environment exists
@@ -241,13 +241,13 @@ export gateway${i}=${!_GATEWAY}
 export mode${i}=${!_MODE}
 export cidr${i}=${!_NETWORK}/${!_PREFIX}
 
-local ip=tmp_ip
+#local ip=tmp_ip
 export ip${i}=${!ip:-${!_C}.254}  # ip1=x.x.x.x
 
 _debug2 "export ip${i}=${!ip:-${!_C}.254}"
 
-test=ip${i}
-_debug2 "gkdgh ip: $ip, ip${i}: ${!test}"
+#test=ip${i}
+#_debug2 "gkdgh ip: $ip, ip${i}: ${!test}"
 #test2=IP${i}
 #_debug2 "gkdgh ip: $ip, ip${i}: ${!test}, IP: $IP, IP${i}: ${!test2}"
 
